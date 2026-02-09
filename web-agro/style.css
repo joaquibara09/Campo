@@ -1,13 +1,14 @@
-/* --- VARIABLES DE COLOR (Identidad Misiones & Brangus) --- */
+/* --- VARIABLES DE COLOR (Identidad Misiones & Brangus - Tono Arena Suave) --- */
 :root {
     --tierra-colorada: #A54938; /* Rojo arcilla */
     --verde-monte: #1b4332;     /* Verde bosque profundo */
-    --verde-claro: #40916c;     /* Verde pastura - AHORA PARA FOOTER Y BOTÓN */
+    --verde-claro: #40916c;     /* Verde pastura */
+    --crudo: #f2eee3;           /* Tono Arena/Hueso más presente */
     --blanco: #ffffff;
-    --gris-fondo: #f8f9fa;
+    --gris-fondo: #e9e4d6;      /* Crudo reforzado para secciones */
     --gris-texto: #4a4a4a;
-    --texto-oscuro: #212529;
-    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    --texto-oscuro: #2c2a26;    /* Marrón muy oscuro para mejor legibilidad */
+    --shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 /* --- RESET & GENERAL --- */
@@ -21,7 +22,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: var(--texto-oscuro);
     line-height: 1.6;
-    background-color: var(--blanco);
+    background-color: var(--crudo);
     scroll-behavior: smooth;
 }
 
@@ -45,12 +46,13 @@ ul { list-style: none; }
 
 /* --- NAVEGACIÓN --- */
 header {
-    background-color: var(--blanco);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background-color: var(--crudo);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 header .container {
@@ -77,6 +79,16 @@ nav {
     transition: transform 0.3s ease;
 }
 
+.white-logo {
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: var(--crudo);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+}
+
 .logo-img:hover {
     transform: scale(1.05);
 }
@@ -91,10 +103,10 @@ nav {
     color: var(--verde-claro);
 }
 
-/* --- BOTÓN DE CONTACTO (Verde Claro) --- */
+/* --- BOTÓN DE CONTACTO --- */
 .btn-contacto {
     background-color: var(--verde-claro);
-    color: var(--blanco) !important;
+    color: var(--crudo) !important;
     padding: 10px 25px;
     border-radius: 4px;
     font-weight: 600;
@@ -118,7 +130,7 @@ nav {
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--blanco);
+    color: var(--crudo);
     padding-top: 80px;
 }
 
@@ -178,19 +190,21 @@ footer .container {
 }
 
 .card {
-    background: var(--blanco);
+    background: rgba(255,255,255,0.4); /* Tarjetas semi-traslúcidas sobre el crudo */
+    backdrop-filter: blur(5px);
     border-radius: 8px;
     box-shadow: var(--shadow);
     transition: transform 0.3s ease;
     padding: 30px;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-.card:hover { transform: translateY(-5px); }
+.card:hover { transform: translateY(-5px); background: var(--blanco); }
 
 .card h3 {
     color: var(--tierra-colorada);
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     padding-bottom: 10px;
 }
 
@@ -221,13 +235,13 @@ footer .container {
 table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--blanco);
+    background: rgba(255,255,255,0.6);
     min-width: 600px;
 }
 
 th {
     background-color: var(--verde-monte);
-    color: var(--blanco);
+    color: var(--crudo);
     padding: 18px;
     text-align: left;
     font-family: 'Montserrat', sans-serif;
@@ -235,12 +249,12 @@ th {
     text-transform: uppercase;
 }
 
-td { padding: 18px; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+td { padding: 18px; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.95rem; }
 
-/* --- FOOTER (Verde Claro) --- */
+/* --- FOOTER --- */
 footer {
     background-color: var(--verde-claro);
-    color: var(--blanco);
+    color: var(--crudo);
     padding: 80px 0 30px;
 }
 
@@ -252,19 +266,18 @@ footer {
 }
 
 .footer-col h4 {
-    color: var(--blanco);
+    color: var(--crudo);
     margin-bottom: 25px;
     font-family: 'Montserrat', sans-serif;
     font-size: 1.1rem;
     position: relative;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .footer-col h4::after {
     content: '';
     width: 30px;
     height: 3px;
-    background: var(--verde-monte); /* Contraste con el verde monte */
+    background: var(--verde-monte);
     position: absolute;
     bottom: -8px;
     left: 0;
@@ -273,11 +286,13 @@ footer {
 .footer-col p, .footer-col a {
     font-size: 0.95rem;
     line-height: 1.8;
-    color: #f0fdf4; /* Blanco con un toque de verde muy suave */
+    color: var(--crudo);
+    opacity: 0.95;
 }
 
 .footer-col strong {
-    color: var(--blanco);
+    color: var(--crudo);
+    font-weight: 700;
 }
 
 .footer-col a:hover {
@@ -288,9 +303,10 @@ footer {
 .copyright {
     text-align: center;
     padding-top: 30px;
-    border-top: 1px solid rgba(255,255,255,0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 0.85rem;
-    color: #f0fdf4;
+    color: var(--crudo);
+    opacity: 0.8;
 }
 
 /* --- RESPONSIVE --- */
