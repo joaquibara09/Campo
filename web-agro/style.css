@@ -1,0 +1,305 @@
+/* --- VARIABLES DE COLOR (Identidad Misiones & Brangus) --- */
+:root {
+    --tierra-colorada: #A54938; /* Rojo arcilla */
+    --verde-monte: #1b4332;     /* Verde bosque profundo */
+    --verde-claro: #40916c;     /* Verde pastura - AHORA PARA FOOTER Y BOTÓN */
+    --blanco: #ffffff;
+    --gris-fondo: #f8f9fa;
+    --gris-texto: #4a4a4a;
+    --texto-oscuro: #212529;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* --- RESET & GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+    background-color: var(--blanco);
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+a { text-decoration: none; color: inherit; transition: 0.3s; }
+ul { list-style: none; }
+
+/* --- CLASES DE UTILIDAD --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.bg-light { background-color: var(--gris-fondo); }
+.color-accent { color: var(--tierra-colorada); }
+
+/* --- NAVEGACIÓN --- */
+header {
+    background-color: var(--blanco);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    max-width: 100%; 
+    padding: 0 30px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 70px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a:hover {
+    color: var(--verde-claro);
+}
+
+/* --- BOTÓN DE CONTACTO (Verde Claro) --- */
+.btn-contacto {
+    background-color: var(--verde-claro);
+    color: var(--blanco) !important;
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-contacto:hover {
+    background-color: var(--verde-monte);
+    transform: translateY(-2px);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    height: 85vh;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1500595046743-cd271d694d30?q=80&w=2074&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--blanco);
+    padding-top: 80px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: fadeInDown 1.2s ease-out;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- SECCIONES --- */
+section { padding: 100px 0; }
+
+section .container, 
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    color: var(--verde-monte);
+    margin-bottom: 15px;
+}
+
+.section-title .line {
+    width: 60px;
+    height: 4px;
+    background-color: var(--tierra-colorada);
+    margin: 0 auto;
+}
+
+/* --- CARDS (GENÉTICA BRANGUS) --- */
+.actividades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.card {
+    background: var(--blanco);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+    padding: 30px;
+}
+
+.card:hover { transform: translateY(-5px); }
+
+.card h3 {
+    color: var(--tierra-colorada);
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.lista-detalles li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    padding-left: 25px;
+    position: relative;
+    text-align: left;
+}
+
+.lista-detalles li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--verde-claro);
+    font-weight: bold;
+}
+
+/* --- TABLA DE PREMIOS --- */
+.tabla-premios {
+    margin-top: 20px;
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--blanco);
+    min-width: 600px;
+}
+
+th {
+    background-color: var(--verde-monte);
+    color: var(--blanco);
+    padding: 18px;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+td { padding: 18px; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+
+/* --- FOOTER (Verde Claro) --- */
+footer {
+    background-color: var(--verde-claro);
+    color: var(--blanco);
+    padding: 80px 0 30px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.footer-col h4 {
+    color: var(--blanco);
+    margin-bottom: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    position: relative;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.footer-col h4::after {
+    content: '';
+    width: 30px;
+    height: 3px;
+    background: var(--verde-monte); /* Contraste con el verde monte */
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+}
+
+.footer-col p, .footer-col a {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #f0fdf4; /* Blanco con un toque de verde muy suave */
+}
+
+.footer-col strong {
+    color: var(--blanco);
+}
+
+.footer-col a:hover {
+    color: var(--verde-monte);
+    text-decoration: underline;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    color: #f0fdf4;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    header .container { padding: 0 15px; }
+    .hero h1 { font-size: 2.5rem; }
+    .nav-links { display: none; } 
+    section { padding: 60px 0; }
+    .footer-content { text-align: center; }
+    .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+    .logo-img { height: 55px; }
+}
