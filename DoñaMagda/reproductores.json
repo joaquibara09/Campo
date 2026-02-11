@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1770835682789,
+    "nombre": "joaquin",
+    "categoria": "macho",
+    "destacado": true,
+    "rp": "10050605",
+    "fechaNac": "2009-10-10",
+    "peso": "70",
+    "imagen": "/uploads/1770835682783.jpeg",
+    "caracteristicas": [
+      "Lindo",
+      "inteligente"
+    ],
+    "descripcion": "fdsad"
+  }
+]
