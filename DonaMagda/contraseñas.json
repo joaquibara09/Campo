@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Roberto Comparin",
+    "contraseña": "donamgda2024",
+    "rol": "administrador"
+  },
+  {
+    "nombre": "Luis Ginatace",
+    "contraseña": "brangus2024",
+    "rol": "administrador"
+  },
+  {
+    "nombre": "L. Barrera",
+    "contraseña": "campo2024",
+    "rol": "administrador"
+  }
+]

@@ -1,9 +1,13 @@
-// --- CONFIGURACIÓN UNIVERSAL ---
-const API_URL = '/reproductores'; 
+// --- CONFIGURACIÓN ---
+const API_URL = '/reproductores';
+let modoAdmin = false;
+let adminActual = null;
 
 // 1. CARGAR REPRODUCTORES AL INICIAR
 document.addEventListener('DOMContentLoaded', () => {
     cargarReproductores();
+    cargarUsuarios();
+    verificarModoAdmin();
 });
 
 async function cargarReproductores() {
@@ -18,7 +22,7 @@ async function cargarReproductores() {
     }
 }
 
-// 2. FUNCIÓN PARA DIBUJAR EL HTML
+// 2. RENDERIZAR REPRODUCTORES
 function renderizarReproductores(lista) {
     const grid = document.getElementById('grid-reproductores');
     if (!grid) return;
@@ -30,13 +34,21 @@ function renderizarReproductores(lista) {
         const badgeHTML = animal.destacado ? `<div class="reproductor-badge ${animal.categoria === 'hembra' ? 'badge-destacado' : ''}">Destacado</div>` : '';
         const colorCategoria = animal.categoria === 'hembra' ? 'categoria-hembra' : '';
         const tagsHTML = animal.caracteristicas.map(tag => `<span class="tag">${tag}</span>`).join('');
+        
+        // BOTÓN ELIMINAR SOLO SI ESTÁ EN MODO ADMIN
+        const btnEliminarHTML = modoAdmin ? 
+            `<button class="btn-eliminar" onclick="eliminarReproductor(${animal.id})" title="Eliminar">×</button>` : '';
+        
+        // INFO DE PUBLICACIÓN (SOLO EN MODO ADMIN)
+        const infoPublicacionHTML = modoAdmin && animal.publicadoPor ? 
+            `<p class="info-publicacion">Publicado por: ${animal.publicadoPor}</p>` : '';
 
         const itemHTML = `
             <div class="reproductor-item ${claseSexo} ${claseDestacado}" data-categoria="${claseSexo}" data-id="${animal.id}">
                 <div class="reproductor-imagen">
                     <img src="${animal.imagen}" alt="${animal.nombre}">
                     ${badgeHTML}
-                    <button class="btn-eliminar" onclick="eliminarReproductor(${animal.id})" title="Eliminar">×</button>
+                    ${btnEliminarHTML}
                 </div>
                 <div class="reproductor-info">
                     <div class="reproductor-categoria ${colorCategoria}">${animal.categoria}</div>
@@ -48,6 +60,7 @@ function renderizarReproductores(lista) {
                     </div>
                     <p class="reproductor-descripcion">${animal.descripcion}</p>
                     <div class="reproductor-caracteristicas">${tagsHTML}</div>
+                    ${infoPublicacionHTML}
                     <button class="btn-consultar" onclick="consultarWhatsapp('${animal.nombre}', '${animal.rp}')">Consultar Disponibilidad</button>
                 </div>
             </div>
@@ -56,50 +69,216 @@ function renderizarReproductores(lista) {
     });
 }
 
-// 3. ELIMINAR REPRODUCTOR
-async function eliminarReproductor(id) {
-    if (!confirm('¿Estás seguro de que querés eliminarlo?')) return;
+// 3. CARGAR LISTA DE USUARIOS
+async function cargarUsuarios() {
     try {
-        const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-        if (response.ok) {
-            alert('Eliminado');
-            cargarReproductores();
+        const response = await fetch('/admin/usuarios');
+        const usuarios = await response.json();
+        const select = document.getElementById('selectUsuario');
+        if (select) {
+            select.innerHTML = '<option value="">Seleccionar usuario...</option>';
+            usuarios.forEach(nombre => {
+                select.innerHTML += `<option value="${nombre}">${nombre}</option>`;
+            });
         }
     } catch (error) {
+        console.error('Error cargando usuarios:', error);
+    }
+}
+
+// 4. SISTEMA DE LOGIN
+async function intentarLogin() {
+    const nombre = document.getElementById('selectUsuario').value;
+    const contraseña = document.getElementById('inputContraseña').value;
+    
+    if (!nombre || !contraseña) {
+        alert('Por favor completá todos los campos');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, contraseña })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            modoAdmin = true;
+            adminActual = data.nombre;
+            localStorage.setItem('modoAdmin', 'true');
+            localStorage.setItem('adminNombre', data.nombre);
+            localStorage.setItem('adminContraseña', contraseña); // GUARDAR PARA FUTURAS OPERACIONES
+            
+            alert(`¡Bienvenido ${data.nombre}! Modo administrador activado.`);
+            cerrarModalLogin();
+            actualizarInterfazAdmin();
+            cargarReproductores(); // Recargar para mostrar botones de eliminar
+        } else {
+            alert('Usuario o contraseña incorrecta');
+        }
+    } catch (error) {
+        console.error('Error en login:', error);
+        alert('Error de conexión');
+    }
+}
+
+// 5. VERIFICAR SI YA ESTABA LOGUEADO
+function verificarModoAdmin() {
+    const guardado = localStorage.getItem('modoAdmin');
+    const nombre = localStorage.getItem('adminNombre');
+    
+    if (guardado === 'true' && nombre) {
+        modoAdmin = true;
+        adminActual = nombre;
+        actualizarInterfazAdmin();
+    }
+}
+
+// 6. ACTUALIZAR INTERFAZ SEGÚN MODO ADMIN
+function actualizarInterfazAdmin() {
+    const btnFloat = document.querySelector('.btn-floating');
+    const btnAdmin = document.querySelector('.btn-admin');
+    const indicadorAdmin = document.getElementById('indicador-admin');
+    
+    if (modoAdmin) {
+        if (btnFloat) btnFloat.style.display = 'flex';
+        if (btnAdmin) {
+            btnAdmin.textContent = '🔓 Cerrar Sesión';
+            btnAdmin.onclick = cerrarSesion;
+        }
+        if (indicadorAdmin) {
+            indicadorAdmin.style.display = 'block';
+            indicadorAdmin.textContent = `Admin: ${adminActual}`;
+        }
+    } else {
+        if (btnFloat) btnFloat.style.display = 'none';
+        if (btnAdmin) {
+            btnAdmin.textContent = '🔒';
+            btnAdmin.onclick = abrirModalLogin;
+        }
+        if (indicadorAdmin) indicadorAdmin.style.display = 'none';
+    }
+}
+
+// 7. CERRAR SESIÓN
+function cerrarSesion() {
+    if (confirm('¿Cerrar sesión de administrador?')) {
+        modoAdmin = false;
+        adminActual = null;
+        localStorage.removeItem('modoAdmin');
+        localStorage.removeItem('adminNombre');
+        localStorage.removeItem('adminContraseña');
+        
+        actualizarInterfazAdmin();
+        cargarReproductores();
+        alert('Sesión cerrada');
+    }
+}
+
+// 8. ELIMINAR REPRODUCTOR (CON AUTENTICACIÓN)
+async function eliminarReproductor(id) {
+    if (!modoAdmin) {
+        alert('Necesitás estar en modo administrador');
+        return;
+    }
+    
+    if (!confirm('¿Estás seguro de eliminar este reproductor?')) return;
+    
+    const adminNombre = localStorage.getItem('adminNombre');
+    const adminContraseña = localStorage.getItem('adminContraseña');
+    
+    try {
+        const response = await fetch(`${API_URL}/${id}`, { 
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminNombre, adminContraseña })
+        });
+        
+        if (response.ok) {
+            alert('Reproductor eliminado');
+            cargarReproductores();
+        } else {
+            alert('Error: No autorizado');
+        }
+    } catch (error) {
+        console.error('Error:', error);
         alert('Error al eliminar');
     }
 }
 
-// 4. LÓGICA DEL FORMULARIO
+// 9. AGREGAR REPRODUCTOR (CON AUTENTICACIÓN)
 const form = document.getElementById('formNuevoReproductor');
 if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        if (!modoAdmin) {
+            alert('Necesitás estar en modo administrador');
+            return;
+        }
+        
         const formData = new FormData(form);
+        
+        // AGREGAR CREDENCIALES DE ADMIN
+        const adminNombre = localStorage.getItem('adminNombre');
+        const adminContraseña = localStorage.getItem('adminContraseña');
+        formData.append('adminNombre', adminNombre);
+        formData.append('adminContraseña', adminContraseña);
+        
         try {
-            const response = await fetch(API_URL, { method: 'POST', body: formData });
+            const response = await fetch(API_URL, { 
+                method: 'POST', 
+                body: formData 
+            });
+            
             if (response.ok) {
-                alert('¡Guardado con éxito!');
+                alert('¡Reproductor agregado con éxito!');
                 form.reset();
                 cerrarModal();
                 cargarReproductores();
+            } else {
+                const error = await response.json();
+                alert('Error: ' + (error.error || 'No autorizado'));
             }
         } catch (error) {
+            console.error('Error:', error);
             alert('Error de conexión');
         }
     });
 }
 
-// 5. UI Y WHATSAPP
-function abrirModal() { document.getElementById('modalAgregar').style.display = 'flex'; }
-function cerrarModal() { document.getElementById('modalAgregar').style.display = 'none'; }
+// 10. MODALES
+function abrirModal() { 
+    if (!modoAdmin) {
+        alert('Necesitás iniciar sesión como administrador');
+        abrirModalLogin();
+        return;
+    }
+    document.getElementById('modalAgregar').style.display = 'flex'; 
+}
 
+function cerrarModal() { 
+    document.getElementById('modalAgregar').style.display = 'none'; 
+}
+
+function abrirModalLogin() { 
+    document.getElementById('modalLogin').style.display = 'flex'; 
+}
+
+function cerrarModalLogin() { 
+    document.getElementById('modalLogin').style.display = 'none'; 
+}
+
+// 11. WHATSAPP
 function consultarWhatsapp(nombre, rp) {
     const mensaje = `Hola, me interesa el reproductor ${nombre} (RP: ${rp}). ¿Está disponible?`;
     window.open(`https://wa.me/5493764231576?text=${encodeURIComponent(mensaje)}`, '_blank');
 }
 
-// 6. FILTROS
+// 12. FILTROS
 document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));

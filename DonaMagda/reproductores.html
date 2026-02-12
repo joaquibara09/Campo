@@ -29,6 +29,11 @@
         </div>
     </header>
 
+    <!-- INDICADOR DE MODO ADMIN -->
+    <div id="indicador-admin" class="indicador-admin" style="display: none;">
+        Admin: Usuario
+    </div>
+
     <section class="hero-interno">
         <div class="container">
             <h1>Nuestros Reproductores</h1>
@@ -43,7 +48,7 @@
                 <div class="line"></div>
             </div>
             <p class="intro-texto">
-                En Cabaña Doña Magda seleccionamos nuestros reproductores bajo criterios rigurosos que combinan excelentes antecedentes genéticos, características morfológicas superiores y habilidad materna comprobada. Estos combinan excelentes antecedentes genéticos (pedigree, DEPs), con adaptación al clima, rusticidad y fertilidad.
+                En Cabaña Doña Magda seleccionamos nuestros reproductores bajo criterios rigurosos que combinan excelentes antecedentes genéticos, características morfológicas superiores y habilidad materna comprobada.
             </p>
         </div>
     </section>
@@ -200,7 +205,7 @@
     <section>
         <div class="container">
             <div class="catalogo-grid" id="grid-reproductores">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -255,12 +260,42 @@
             </div>
             <div class="copyright">
                 &copy; 2026 Cabaña Doña Magda. Todos los derechos reservados.
+                <!-- BOTÓN ADMIN DISCRETO -->
+                <button class="btn-admin" onclick="abrirModalLogin()" title="Modo Administrador">🔒</button>
             </div>
         </div>
     </footer>
 
-    <button class="btn-floating" onclick="abrirModal()">+</button>
+    <!-- BOTÓN FLOTANTE + (OCULTO POR DEFECTO) -->
+    <button class="btn-floating" onclick="abrirModal()" style="display: none;">+</button>
 
+    <!-- MODAL DE LOGIN ADMIN -->
+    <div class="modal-overlay" id="modalLogin">
+        <div class="modal-content modal-login">
+            <button class="btn-cerrar-modal" onclick="cerrarModalLogin()">&times;</button>
+            <div class="modal-header">
+                <h2>🔐 Acceso Administrador</h2>
+                <p style="font-size: 0.9vw; color: var(--gris-texto); margin-top: 1vh;">Ingresá tus credenciales</p>
+            </div>
+            <form id="formLogin" onsubmit="event.preventDefault(); intentarLogin();">
+                <div class="form-group">
+                    <label>Usuario:</label>
+                    <select id="selectUsuario" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Contraseña:</label>
+                    <input type="password" id="inputContraseña" required placeholder="Ingresá tu contraseña">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; border:none; cursor:pointer;">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL AGREGAR REPRODUCTOR -->
     <div class="modal-overlay" id="modalAgregar">
         <div class="modal-content">
             <button class="btn-cerrar-modal" onclick="cerrarModal()">&times;</button>
@@ -306,7 +341,7 @@
 
                 <div class="form-group">
                     <label>Foto:</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/*" required>
+                    <input type="file" name="imagen" accept="image/*" required>
                 </div>
 
                 <div class="form-group">
