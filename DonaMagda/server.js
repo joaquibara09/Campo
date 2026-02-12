@@ -10,7 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 // --- 1. CONFIGURACIÓN DE CLOUDINARY ---
-// Reemplazá esto con tus datos del Dashboard de Cloudinary
 cloudinary.config({ 
   cloud_name: 'dmtyidlfr', 
   api_key: '914869723251272', 
@@ -24,7 +23,7 @@ app.use(express.static(__dirname));
 
 const DB_FILE = path.join(__dirname, 'reproductores.json');
 
-// --- 2. MULTER EN MEMORIA (No usa el disco de Render) ---
+// --- 2. MULTER EN MEMORIA ---
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -33,30 +32,43 @@ const upload = multer({ storage: storage });
 app.get('/reproductores', (req, res) => {
     if (!fs.existsSync(DB_FILE)) return res.json([]);
     fs.readFile(DB_FILE, 'utf8', (err, data) => {
-        if (err) return res.status(500).json({ error: "Error" });
+        if (err) return res.status(500).json({ error: "Error de lectura" });
         res.json(data ? JSON.parse(data) : []);
     });
 });
 
-// NUEVO POST CON CLOUDINARY
+// POST CON CLOUDINARY + LOGS DE DEBUG
 app.post('/reproductores', upload.single('imagen'), async (req, res) => {
+    console.log("--- Intento de subida detectado ---");
+    
     try {
-        if (!req.file) return res.status(400).send('No hay imagen');
+        if (!req.file) {
+            console.log("❌ Error: No se recibió ningún archivo en el servidor.");
+            return res.status(400).send('No hay imagen en la petición');
+        }
 
-        // Subida a Cloudinary usando el buffer de memoria
+        console.log(`Archivo recibido: ${req.file.originalname} (${req.file.size} bytes)`);
+
+        // Subida a Cloudinary
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
-                let stream = cloudinary.uploader.upload_stream((error, result) => {
-                    if (result) resolve(result);
-                    else reject(error);
-                });
+                let stream = cloudinary.uploader.upload_stream(
+                    { folder: "doña_magda" }, // Organiza tus fotos en una carpeta
+                    (error, result) => {
+                        if (result) resolve(result);
+                        else {
+                            console.error("❌ Error en Cloudinary:", error);
+                            reject(error);
+                        }
+                    }
+                );
                 streamifier.createReadStream(req.file.buffer).pipe(stream);
             });
         };
 
         const result = await streamUpload(req);
+        console.log("✅ Subido a Cloudinary con éxito:", result.secure_url);
 
-        // El objeto que guardamos en el JSON
         const nuevo = {
             id: Date.now(),
             nombre: req.body.nombre,
@@ -65,7 +77,7 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
             rp: req.body.rp,
             fechaNac: req.body.fechaNac,
             peso: req.body.peso,
-            imagen: result.secure_url, // URL de la nube: https://res.cloudinary.com/...
+            imagen: result.secure_url,
             caracteristicas: req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [],
             descripcion: req.body.descripcion
         };
@@ -74,25 +86,32 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
         fs.readFile(DB_FILE, 'utf8', (err, data) => {
             let reproductores = (!err && data) ? JSON.parse(data) : [];
             reproductores.push(nuevo);
-            fs.writeFile(DB_FILE, JSON.stringify(reproductores, null, 2), () => {
+            fs.writeFile(DB_FILE, JSON.stringify(reproductores, null, 2), (err) => {
+                if (err) {
+                    console.error("❌ Error al escribir el JSON:", err);
+                    return res.status(500).send("Error guardando datos");
+                }
+                console.log("💾 Registro guardado en reproductores.json");
                 res.json(nuevo);
             });
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error subiendo a Cloudinary');
+        console.error("❌ Error crítico en el proceso:", error);
+        res.status(500).send('Error interno en el servidor');
     }
 });
 
-// Eliminar (el código de antes sigue funcionando igual)
 app.delete('/reproductores/:id', (req, res) => {
     const id = parseInt(req.params.id);
     fs.readFile(DB_FILE, 'utf8', (err, data) => {
         if (err) return res.status(500).send();
         const filtrados = JSON.parse(data).filter(r => r.id !== id);
-        fs.writeFile(DB_FILE, JSON.stringify(filtrados, null, 2), () => res.json({ ok: true }));
+        fs.writeFile(DB_FILE, JSON.stringify(filtrados, null, 2), () => {
+            console.log(`🗑️ Eliminado animal ID: ${id}`);
+            res.json({ ok: true });
+        });
     });
 });
 
-app.listen(PORT, () => console.log(`🚀 Corriendo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Servidor listo en puerto ${PORT}`));
