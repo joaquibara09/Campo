@@ -3,78 +3,89 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
 
 const app = express();
-const PORT = process.env.PORT || 10000; 
+const PORT = process.env.PORT || 10000;
 
-// --- 1. CONFIGURACIÓN ---
+// --- 1. CONFIGURACIÓN DE CLOUDINARY ---
+// Reemplazá esto con tus datos del Dashboard de Cloudinary
+cloudinary.config({ 
+  cloud_name: 'dmtyidlfr', 
+  api_key: '914869723251272', 
+  api_secret: 'x-w02FIMxH0ugMwrMbLWAgzNpic' 
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
 
-// Rutas absolutas para evitar errores en Render
-const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const DB_FILE = path.join(__dirname, 'reproductores.json');
 
-// Servir archivos estáticos
-app.use(express.static(__dirname));
-app.use('/uploads', express.static(UPLOADS_DIR));
-
-// --- 2. MULTER (ALMACENAMIENTO) ---
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        if (!fs.existsSync(UPLOADS_DIR)) {
-            fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-        }
-        cb(null, UPLOADS_DIR);
-    },
-    filename: (req, file, cb) => {
-        const nombreLimpio = file.originalname.replace(/\s+/g, '-');
-        cb(null, Date.now() + '-' + nombreLimpio);
-    }
-});
+// --- 2. MULTER EN MEMORIA (No usa el disco de Render) ---
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// --- 3. RUTAS API ---
+// --- 3. RUTAS ---
 
-app.get('/', (req, res) => res.redirect('/index.html'));
-
-// Obtener JSON
 app.get('/reproductores', (req, res) => {
     if (!fs.existsSync(DB_FILE)) return res.json([]);
     fs.readFile(DB_FILE, 'utf8', (err, data) => {
-        if (err) return res.status(500).json({ error: "Error de lectura" });
+        if (err) return res.status(500).json({ error: "Error" });
         res.json(data ? JSON.parse(data) : []);
     });
 });
 
-// Guardar
-app.post('/reproductores', upload.single('imagen'), (req, res) => {
-    let listaTags = req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [];
+// NUEVO POST CON CLOUDINARY
+app.post('/reproductores', upload.single('imagen'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).send('No hay imagen');
 
-    const nuevo = {
-        id: Date.now(),
-        nombre: req.body.nombre,
-        categoria: req.body.categoria,
-        destacado: req.body.destacado === 'true',
-        rp: req.body.rp,
-        fechaNac: req.body.fechaNac,
-        peso: req.body.peso,
-        imagen: req.file ? `/uploads/${req.file.filename}` : '',
-        caracteristicas: listaTags,
-        descripcion: req.body.descripcion
-    };
+        // Subida a Cloudinary usando el buffer de memoria
+        let streamUpload = (req) => {
+            return new Promise((resolve, reject) => {
+                let stream = cloudinary.uploader.upload_stream((error, result) => {
+                    if (result) resolve(result);
+                    else reject(error);
+                });
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            });
+        };
 
-    fs.readFile(DB_FILE, 'utf8', (err, data) => {
-        let reproductores = (!err && data) ? JSON.parse(data) : [];
-        reproductores.push(nuevo);
-        fs.writeFile(DB_FILE, JSON.stringify(reproductores, null, 2), () => {
-            res.json(nuevo);
+        const result = await streamUpload(req);
+
+        // El objeto que guardamos en el JSON
+        const nuevo = {
+            id: Date.now(),
+            nombre: req.body.nombre,
+            categoria: req.body.categoria,
+            destacado: req.body.destacado === 'true',
+            rp: req.body.rp,
+            fechaNac: req.body.fechaNac,
+            peso: req.body.peso,
+            imagen: result.secure_url, // URL de la nube: https://res.cloudinary.com/...
+            caracteristicas: req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [],
+            descripcion: req.body.descripcion
+        };
+
+        // Guardar en JSON
+        fs.readFile(DB_FILE, 'utf8', (err, data) => {
+            let reproductores = (!err && data) ? JSON.parse(data) : [];
+            reproductores.push(nuevo);
+            fs.writeFile(DB_FILE, JSON.stringify(reproductores, null, 2), () => {
+                res.json(nuevo);
+            });
         });
-    });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error subiendo a Cloudinary');
+    }
 });
 
-// Eliminar
+// Eliminar (el código de antes sigue funcionando igual)
 app.delete('/reproductores/:id', (req, res) => {
     const id = parseInt(req.params.id);
     fs.readFile(DB_FILE, 'utf8', (err, data) => {
@@ -84,4 +95,4 @@ app.delete('/reproductores/:id', (req, res) => {
     });
 });
 
-app.listen(PORT, () => console.log(`🚀 Puerto: ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Corriendo en puerto ${PORT}`));
