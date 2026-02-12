@@ -32,10 +32,11 @@ function renderizarReproductores(lista) {
         const tagsHTML = animal.caracteristicas.map(tag => `<span class="tag">${tag}</span>`).join('');
 
         const itemHTML = `
-            <div class="reproductor-item ${claseSexo} ${claseDestacado}" data-categoria="${claseSexo}">
+            <div class="reproductor-item ${claseSexo} ${claseDestacado}" data-categoria="${claseSexo}" data-id="${animal.id}">
                 <div class="reproductor-imagen">
                     <img src="${animal.imagen}" alt="${animal.nombre}">
                     ${badgeHTML}
+                    <button class="btn-eliminar" onclick="eliminarReproductor(${animal.id})" title="Eliminar reproductor">×</button>
                 </div>
                 <div class="reproductor-info">
                     <div class="reproductor-categoria ${colorCategoria}">${animal.categoria}</div>
@@ -66,7 +67,31 @@ function renderizarReproductores(lista) {
     });
 }
 
-// 3. LÓGICA DEL FORMULARIO (SUBIDA DE DATOS)
+// 3. FUNCIÓN PARA ELIMINAR REPRODUCTOR
+async function eliminarReproductor(id) {
+    // Confirmar antes de eliminar
+    if (!confirm('¿Estás seguro de que querés eliminar este reproductor?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('Reproductor eliminado correctamente');
+            cargarReproductores(); // Recargar lista
+        } else {
+            alert('Error al eliminar el reproductor');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error de conexión al eliminar');
+    }
+}
+
+// 4. LÓGICA DEL FORMULARIO (SUBIDA DE DATOS)
 const form = document.getElementById('formNuevoReproductor');
 
 form.addEventListener('submit', async (e) => {
@@ -77,7 +102,7 @@ form.addEventListener('submit', async (e) => {
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
-            body: formData // Fetch maneja automáticamente el multipart/form-data
+            body: formData
         });
 
         if (response.ok) {
@@ -94,7 +119,7 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-// 4. FUNCIONES DE UI (MODAL Y WHATSAPP)
+// 5. FUNCIONES DE UI (MODAL Y WHATSAPP)
 function abrirModal() {
     document.getElementById('modalAgregar').style.display = 'flex';
 }
@@ -117,7 +142,7 @@ function consultarWhatsapp(nombre, rp) {
     window.open(whatsapp, '_blank');
 }
 
-// 5. SISTEMA DE FILTROS (Adaptado para trabajar con los nuevos elementos)
+// 6. SISTEMA DE FILTROS
 document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         // UI Botones

@@ -1704,3 +1704,57 @@ footer {
         width: 95%;
     }
 }
+.btn-eliminar {
+    position: absolute;
+    top: 1vh;
+    right: 1vw;
+    background-color: rgba(165, 73, 56, 0.9);
+    color: var(--crudo);
+    border: none;
+    border-radius: 50%;
+    width: 4vh;
+    height: 4vh;
+    font-size: 2.5vh;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0.2vh 0.8vh rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 10;
+    line-height: 1;
+}
+
+.btn-eliminar:hover {
+    background-color: var(--tierra-colorada);
+    transform: scale(1.15) rotate(90deg);
+    box-shadow: 0 0.4vh 1.2vh rgba(0,0,0,0.4);
+}
+
+.btn-eliminar:active {
+    transform: scale(1.05) rotate(90deg);
+}
+
+/* Ajuste para que el badge destacado no se superponga */
+.reproductor-badge {
+    top: 1.5vh;
+    right: 6vw; /* Moverlo a la izquierda para dar espacio al botón eliminar */
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .btn-eliminar {
+        width: 6vh;
+        height: 6vh;
+        font-size: 4vh;
+        top: 1.5vh;
+        right: 2vw;
+    }
+
+    .reproductor-badge {
+        top: 1.5vh;
+        right: 10vw;
+        font-size: 2.5vw;
+    }
+}
