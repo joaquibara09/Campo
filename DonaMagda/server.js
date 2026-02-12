@@ -37,7 +37,7 @@ app.get('/reproductores', (req, res) => {
     });
 });
 
-// POST CON CLOUDINARY + LOGS DE DEBUG
+// POST CON CLOUDINARY + CONVERSIÓN A JPG
 app.post('/reproductores', upload.single('imagen'), async (req, res) => {
     console.log("--- Intento de subida detectado ---");
     
@@ -49,11 +49,14 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
 
         console.log(`Archivo recibido: ${req.file.originalname} (${req.file.size} bytes)`);
 
-        // Subida a Cloudinary
+        // Subida a Cloudinary con transformación automática
         let streamUpload = (req) => {
             return new Promise((resolve, reject) => {
                 let stream = cloudinary.uploader.upload_stream(
-                    { folder: "doña_magda" }, // Organiza tus fotos en una carpeta
+                    { 
+                        folder: "doña_magda",
+                        format: "jpg" // <--- FORZAMOS JPG PARA COMPATIBILIDAD TOTAL
+                    }, 
                     (error, result) => {
                         if (result) resolve(result);
                         else {
@@ -67,7 +70,7 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
         };
 
         const result = await streamUpload(req);
-        console.log("✅ Subido a Cloudinary con éxito:", result.secure_url);
+        console.log("✅ Subido y convertido a JPG con éxito:", result.secure_url);
 
         const nuevo = {
             id: Date.now(),
@@ -77,7 +80,7 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
             rp: req.body.rp,
             fechaNac: req.body.fechaNac,
             peso: req.body.peso,
-            imagen: result.secure_url,
+            imagen: result.secure_url, // URL final de Cloudinary
             caracteristicas: req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [],
             descripcion: req.body.descripcion
         };
