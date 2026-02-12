@@ -110,7 +110,7 @@ async function intentarLogin() {
             adminActual = data.nombre;
             localStorage.setItem('modoAdmin', 'true');
             localStorage.setItem('adminNombre', data.nombre);
-            localStorage.setItem('adminContraseña', contraseña); // GUARDAR PARA FUTURAS OPERACIONES
+            // NO GUARDAMOS LA CONTRASEÑA - se pedirá en cada operación
             
             alert(`¡Bienvenido ${data.nombre}! Modo administrador activado.`);
             cerrarModalLogin();
@@ -170,7 +170,7 @@ function cerrarSesion() {
         adminActual = null;
         localStorage.removeItem('modoAdmin');
         localStorage.removeItem('adminNombre');
-        localStorage.removeItem('adminContraseña');
+        // No hay contraseña guardada para borrar
         
         actualizarInterfazAdmin();
         cargarReproductores();
@@ -187,8 +187,14 @@ async function eliminarReproductor(id) {
     
     if (!confirm('¿Estás seguro de eliminar este reproductor?')) return;
     
+    // PEDIR CONTRASEÑA PARA CONFIRMAR
     const adminNombre = localStorage.getItem('adminNombre');
-    const adminContraseña = localStorage.getItem('adminContraseña');
+    const adminContraseña = prompt(`🔐 ${adminNombre}, confirmá tu contraseña para eliminar:`);
+    
+    if (!adminContraseña) {
+        alert('Eliminación cancelada');
+        return;
+    }
     
     try {
         const response = await fetch(`${API_URL}/${id}`, { 
@@ -201,7 +207,8 @@ async function eliminarReproductor(id) {
             alert('Reproductor eliminado');
             cargarReproductores();
         } else {
-            alert('Error: No autorizado');
+            const error = await response.json();
+            alert('Error: ' + (error.error || 'Contraseña incorrecta'));
         }
     } catch (error) {
         console.error('Error:', error);
@@ -222,9 +229,15 @@ if (form) {
         
         const formData = new FormData(form);
         
-        // AGREGAR CREDENCIALES DE ADMIN
+        // TOMAR CONTRASEÑA DEL FORMULARIO (no del LocalStorage)
         const adminNombre = localStorage.getItem('adminNombre');
-        const adminContraseña = localStorage.getItem('adminContraseña');
+        const adminContraseña = document.getElementById('adminPasswordAgregar').value;
+        
+        if (!adminContraseña) {
+            alert('Por favor ingresá tu contraseña');
+            return;
+        }
+        
         formData.append('adminNombre', adminNombre);
         formData.append('adminContraseña', adminContraseña);
         
@@ -241,7 +254,7 @@ if (form) {
                 cargarReproductores();
             } else {
                 const error = await response.json();
-                alert('Error: ' + (error.error || 'No autorizado'));
+                alert('Error: ' + (error.error || 'Contraseña incorrecta o no autorizado'));
             }
         } catch (error) {
             console.error('Error:', error);

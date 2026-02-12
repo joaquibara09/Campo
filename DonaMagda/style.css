@@ -1758,3 +1758,153 @@ footer {
         font-size: 2.5vw;
     }
 }
+/* ===============================================
+   SISTEMA DE AUTENTICACIÓN - ESTILOS ADICIONALES
+   =============================================== */
+
+/* --- BOTÓN ADMIN EN FOOTER --- */
+.btn-admin {
+    position: absolute;
+    right: 2vw;
+    bottom: 50%;
+    transform: translateY(50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--crudo);
+    padding: 0.8vh 1.5vw;
+    border-radius: 0.5vh;
+    font-size: 1.2vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.btn-admin:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(50%) scale(1.05);
+}
+
+.copyright {
+    position: relative;
+}
+
+/* --- INDICADOR DE MODO ADMIN --- */
+.indicador-admin {
+    position: fixed;
+    top: 12vh;
+    right: 2vw;
+    background: var(--tierra-colorada);
+    color: var(--crudo);
+    padding: 1vh 2vw;
+    border-radius: 0.5vh;
+    font-size: 0.85vw;
+    font-weight: 600;
+    z-index: 999;
+    box-shadow: 0 0.3vh 1vh rgba(0,0,0,0.2);
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* --- MODAL DE LOGIN --- */
+.modal-login {
+    max-width: 400px !important;
+}
+
+.modal-login .modal-header h2 {
+    text-align: center;
+    margin-bottom: 1vh;
+}
+
+.modal-login .modal-header p {
+    text-align: center;
+    color: var(--gris-texto);
+}
+
+/* --- INFO DE PUBLICACIÓN --- */
+.info-publicacion {
+    font-size: 0.75vw;
+    color: var(--tierra-colorada);
+    font-style: italic;
+    margin-top: 1vh;
+    padding-top: 1vh;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* --- CAMPO DE CONFIRMACIÓN DE CONTRASEÑA --- */
+.auth-confirm {
+    background: rgba(165, 73, 56, 0.08);
+    border: 2px solid var(--tierra-colorada);
+    border-radius: 0.5vh;
+    padding: 2vh 1.5vw !important;
+    margin-top: 3vh !important;
+}
+
+.auth-confirm label {
+    color: var(--tierra-colorada) !important;
+    font-weight: 700 !important;
+    margin-bottom: 1vh !important;
+}
+
+.auth-confirm input {
+    border: 2px solid var(--tierra-colorada) !important;
+    font-weight: 600;
+}
+
+.auth-confirm input:focus {
+    outline: none;
+    border-color: var(--verde-monte) !important;
+    box-shadow: 0 0 0 0.3vh rgba(27, 67, 50, 0.2);
+}
+
+/* --- RESPONSIVE PARA AUTENTICACIÓN --- */
+@media (max-width: 768px) {
+    .btn-admin {
+        font-size: 4vw;
+        padding: 1vh 3vw;
+        right: 3vw;
+    }
+
+    .indicador-admin {
+        font-size: 3vw;
+        top: 10vh;
+        right: 3vw;
+        padding: 1vh 3vw;
+    }
+
+    .info-publicacion {
+        font-size: 2.8vw;
+    }
+
+    .modal-login {
+        width: 90% !important;
+    }
+
+    .auth-confirm {
+        padding: 2vh 4vw !important;
+    }
+
+    .auth-confirm label {
+        font-size: 3.5vw !important;
+    }
+
+    .auth-confirm input {
+        font-size: 3.5vw;
+    }
+}
+
+/* --- AJUSTES AL BOTÓN FLOTANTE PARA MODO ADMIN --- */
+.btn-floating {
+    /* Ya no se muestra por defecto, solo en modo admin */
+    display: none;
+}
