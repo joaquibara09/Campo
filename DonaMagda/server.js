@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 10000;
 cloudinary.config({ 
   cloud_name: 'dmtyidlfr', 
   api_key: '914869723251272', 
-  api_secret: '' 
+  api_secret: '6WPf-qeHS2PiGHs5FHNl3b3SS4g' 
 });
 
 app.use(cors());
