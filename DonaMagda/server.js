@@ -32,7 +32,7 @@ const upload = multer({ storage: storage });
 function validarCredenciales(nombre, contrasena) {
     if (!fs.existsSync(PASS_FILE)) return null;
     const usuarios = JSON.parse(fs.readFileSync(PASS_FILE, 'utf8'));
-    const usuario = usuarios.find(u => u.nombre === nombre && u.contrasena === contraseña);
+    const usuario = usuarios.find(u => u.nombre === nombre && u.contraseña === contrasena);
     return usuario || null;
 }
 
