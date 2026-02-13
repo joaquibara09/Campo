@@ -89,9 +89,9 @@ async function cargarUsuarios() {
 // 4. SISTEMA DE LOGIN
 async function intentarLogin() {
     const nombre = document.getElementById('selectUsuario').value;
-    const contrasena = document.getElementById('inputContraseña').value;
+    const pwd = document.getElementById('inputPassword').value;
     
-    if (!nombre || !contrasena) {
+    if (!nombre || !pwd) {
         alert('Por favor completá todos los campos');
         return;
     }
@@ -100,7 +100,7 @@ async function intentarLogin() {
         const response = await fetch('/admin/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, contrasena })
+            body: JSON.stringify({ nombre, pwd })
         });
         
         const data = await response.json();
@@ -189,9 +189,9 @@ async function eliminarReproductor(id) {
     
     // PEDIR CONTRASEÑA PARA CONFIRMAR
     const adminNombre = localStorage.getItem('adminNombre');
-    const adminContrasena = prompt(`🔐 ${adminNombre}, confirmá tu contraseña para eliminar:`);
+    const adminPwd = prompt(`🔐 ${adminNombre}, confirmá tu contraseña para eliminar:`);
     
-    if (!adminContrasena) {
+    if (!adminPwd) {
         alert('Eliminación cancelada');
         return;
     }
@@ -200,7 +200,7 @@ async function eliminarReproductor(id) {
         const response = await fetch(`${API_URL}/${id}`, { 
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ adminNombre, adminContrasena })
+            body: JSON.stringify({ adminNombre, adminPwd })
         });
         
         if (response.ok) {
@@ -231,15 +231,15 @@ if (form) {
         
         // TOMAR CONTRASEÑA DEL FORMULARIO (no del LocalStorage)
         const adminNombre = localStorage.getItem('adminNombre');
-        const adminContrasena = document.getElementById('adminPasswordAgregar').value;
+        const adminPwd = document.getElementById('adminPasswordAgregar').value;
         
-        if (!adminContrasena) {
+        if (!adminPwd) {
             alert('Por favor ingresá tu contraseña');
             return;
         }
         
         formData.append('adminNombre', adminNombre);
-        formData.append('adminContrasena', adminContrasena);
+        formData.append('adminPwd', adminPwd);
         
         try {
             const response = await fetch(API_URL, { 

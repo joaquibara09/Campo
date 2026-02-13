@@ -22,17 +22,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
 
 const DB_FILE = path.join(__dirname, 'reproductores.json');
-const PASS_FILE = path.join(__dirname, 'contraseñas.json');
+const PASS_FILE = path.join(__dirname, 'pwd.json');
 
 // --- 2. MULTER EN MEMORIA ---
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // --- 3. FUNCIÓN PARA VALIDAR CONTRASEÑA ---
-function validarCredenciales(nombre, contrasena) {
+function validarCredenciales(nombre, pwd) {
     if (!fs.existsSync(PASS_FILE)) return null;
     const usuarios = JSON.parse(fs.readFileSync(PASS_FILE, 'utf8'));
-    const usuario = usuarios.find(u => u.nombre === nombre && u.contraseña === contrasena);
+    const usuario = usuarios.find(u => u.nombre === nombre && u.pwd === pwd);
     return usuario || null;
 }
 
@@ -40,8 +40,8 @@ function validarCredenciales(nombre, contrasena) {
 
 // LOGIN
 app.post('/admin/login', (req, res) => {
-    const { nombre, contrasena } = req.body;
-    const usuario = validarCredenciales(nombre, contrasena);
+    const { nombre, pwd } = req.body;
+    const usuario = validarCredenciales(nombre, pwd);
     
     if (usuario) {
         console.log(`✅ Login exitoso: ${nombre}`);
@@ -79,8 +79,8 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
     
     try {
         // VALIDAR CREDENCIALES
-        const { adminNombre, adminContrasena } = req.body;
-        const usuario = validarCredenciales(adminNombre, adminContrasena);
+        const { adminNombre, adminPwd } = req.body;
+        const usuario = validarCredenciales(adminNombre, adminPwd);
         
         if (!usuario) {
             console.log("❌ Autenticación fallida al agregar reproductor");
@@ -156,10 +156,10 @@ app.post('/reproductores', upload.single('imagen'), async (req, res) => {
 // ELIMINAR REPRODUCTOR (CON AUTENTICACIÓN)
 app.delete('/reproductores/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    const { adminNombre, adminContrasena } = req.body;
+    const { adminNombre, adminPwd } = req.body;
     
     // VALIDAR CREDENCIALES
-    const usuario = validarCredenciales(adminNombre, adminContrasena);
+    const usuario = validarCredenciales(adminNombre, adminPwd);
     
     if (!usuario) {
         console.log("❌ Autenticación fallida al eliminar reproductor");
