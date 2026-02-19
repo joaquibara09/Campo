@@ -61,6 +61,7 @@ function renderizarReproductores(lista) {
                     <p class="reproductor-descripcion">${animal.descripcion}</p>
                     <div class="reproductor-caracteristicas">${tagsHTML}</div>
                     ${infoPublicacionHTML}
+                    ${animal.documento ? `<a href="${animal.documento}" target="_blank" class="btn-documento">📄 Ver Documento</a>` : ''}
                     <button class="btn-consultar" onclick="consultarWhatsapp('${animal.nombre}', '${animal.rp}')">Consultar Disponibilidad</button>
                 </div>
             </div>

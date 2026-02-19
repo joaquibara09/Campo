@@ -1533,6 +1533,30 @@ footer {
     box-shadow: 0 0.4vh 1.2vh rgba(0,0,0,0.15);
 }
 
+/* --- BOTÓN DOCUMENTO --- */
+.btn-documento {
+    display: block;
+    width: 100%;
+    padding: 1.2vh 2vw;
+    background-color: var(--tierra-colorada);
+    color: var(--crudo);
+    border: none;
+    border-radius: 0.5vh;
+    font-size: 0.85vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0.2vh 0.8vh rgba(0,0,0,0.1);
+    text-align: center;
+    margin-bottom: 1.5vh;
+}
+
+.btn-documento:hover {
+    background-color: #8b3a2e;
+    transform: translateY(-0.2vh);
+    box-shadow: 0 0.4vh 1.2vh rgba(0,0,0,0.15);
+}
+
 /* --- INFO DE COMPRA --- */
 .info-compra-box {
     background: rgba(255,255,255,0.5);
