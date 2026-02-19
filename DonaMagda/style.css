@@ -130,8 +130,7 @@ nav {
 /* --- HERO SECTION (HOMEPAGE) --- */
 .hero {
     height: 85vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                url('https://images.unsplash.com/photo-1500595046743-cd271d694d30?q=80&w=2074&auto=format&fit=crop');
+    background: url('IMG_1312.JPG');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -172,7 +171,7 @@ nav {
 .hero-interno {
     height: 45vh;
     background: linear-gradient(rgba(27, 67, 50, 0.85), rgba(27, 67, 50, 0.85)), 
-                url('https://images.unsplash.com/photo-1500595046743-cd271d694d30?q=80&w=2074&auto=format&fit=crop');
+                url('IMG_1312.JPG');
     background-size: cover;
     background-position: center;
     display: flex;
