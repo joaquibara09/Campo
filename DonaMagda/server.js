@@ -10,6 +10,13 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 🚨 BLOQUEO DE SEGURIDAD VITAL: Evita que el público pueda descargar tus contraseñas y base de datos
+app.get(['/pwd.json', '/reproductores.json'], (req, res) => {
+    res.status(403).send('Acceso denegado');
+});
+
+// Servir la web estática
 app.use(express.static(__dirname));
 
 // SERVIR ARCHIVOS DE UPLOADS
@@ -31,8 +38,9 @@ const storage = multer.diskStorage({
         cb(null, UPLOADS_DIR);
     },
     filename: function (req, file, cb) {
-        // Generar nombre único: timestamp + nombre original
-        const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '-');
+        // Saneamiento estricto: Elimina acentos, ñ, #, ?, +, etc. Solo letras, números, puntos y guiones.
+        const safeName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '');
+        const uniqueName = Date.now() + '-' + safeName;
         cb(null, uniqueName);
     }
 });
@@ -88,7 +96,6 @@ app.get('/reproductores', (req, res) => {
 });
 
 // AGREGAR REPRODUCTOR (CON AUTENTICACIÓN)
-// Acepta imagen Y documento
 app.post('/reproductores', upload.fields([
     { name: 'imagen', maxCount: 1 },
     { name: 'documento', maxCount: 1 }
@@ -96,7 +103,6 @@ app.post('/reproductores', upload.fields([
     console.log("--- Intento de subida detectado ---");
     
     try {
-        // VALIDAR CREDENCIALES
         const { adminNombre, adminPwd } = req.body;
         const usuario = validarCredenciales(adminNombre, adminPwd);
         
@@ -125,7 +131,7 @@ app.post('/reproductores', upload.fields([
             rp: req.body.rp,
             fechaNac: req.body.fechaNac,
             peso: req.body.peso,
-            imagen: '/uploads/' + req.files.imagen[0].filename, // Ruta relativa
+            imagen: '/uploads/' + req.files.imagen[0].filename, // Ruta relativa correcta
             documento: req.files.documento ? '/uploads/' + req.files.documento[0].filename : null,
             caracteristicas: req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [],
             descripcion: req.body.descripcion,
@@ -158,7 +164,6 @@ app.delete('/reproductores/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const { adminNombre, adminPwd } = req.body;
     
-    // VALIDAR CREDENCIALES
     const usuario = validarCredenciales(adminNombre, adminPwd);
     
     if (!usuario) {
@@ -173,20 +178,21 @@ app.delete('/reproductores/:id', (req, res) => {
         const reproductor = reproductores.find(r => r.id === id);
         
         if (reproductor) {
-            // ELIMINAR ARCHIVOS DEL DISCO
+            // ELIMINAR ARCHIVOS DEL DISCO (CORREGIDO)
             if (reproductor.imagen) {
-                const imagePath = path.join(__dirname, reproductor.imagen);
+                // Se usa path.basename para extraer solo "123-foto.jpg" y evitar errores de ruta
+                const imagePath = path.join(UPLOADS_DIR, path.basename(reproductor.imagen));
                 if (fs.existsSync(imagePath)) {
                     fs.unlinkSync(imagePath);
-                    console.log(`🗑️ Imagen eliminada: ${reproductor.imagen}`);
+                    console.log(`🗑️ Imagen eliminada del disco`);
                 }
             }
             
             if (reproductor.documento) {
-                const docPath = path.join(__dirname, reproductor.documento);
+                const docPath = path.join(UPLOADS_DIR, path.basename(reproductor.documento));
                 if (fs.existsSync(docPath)) {
                     fs.unlinkSync(docPath);
-                    console.log(`🗑️ Documento eliminado: ${reproductor.documento}`);
+                    console.log(`🗑️ Documento eliminado del disco`);
                 }
             }
         }

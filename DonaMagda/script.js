@@ -3,7 +3,6 @@ const API_URL = '/reproductores';
 let modoAdmin = false;
 let adminActual = null;
 
-// 1. CARGAR REPRODUCTORES AL INICIAR
 document.addEventListener('DOMContentLoaded', () => {
     cargarReproductores();
     cargarUsuarios();
@@ -22,7 +21,6 @@ async function cargarReproductores() {
     }
 }
 
-// 2. RENDERIZAR REPRODUCTORES
 function renderizarReproductores(lista) {
     const grid = document.getElementById('grid-reproductores');
     if (!grid) return;
@@ -35,11 +33,9 @@ function renderizarReproductores(lista) {
         const colorCategoria = animal.categoria === 'hembra' ? 'categoria-hembra' : '';
         const tagsHTML = animal.caracteristicas.map(tag => `<span class="tag">${tag}</span>`).join('');
         
-        // BOTÓN ELIMINAR SOLO SI ESTÁ EN MODO ADMIN
         const btnEliminarHTML = modoAdmin ? 
             `<button class="btn-eliminar" onclick="eliminarReproductor(${animal.id})" title="Eliminar">×</button>` : '';
         
-        // INFO DE PUBLICACIÓN (SOLO EN MODO ADMIN)
         const infoPublicacionHTML = modoAdmin && animal.publicadoPor ? 
             `<p class="info-publicacion">Publicado por: ${animal.publicadoPor}</p>` : '';
 
@@ -70,7 +66,6 @@ function renderizarReproductores(lista) {
     });
 }
 
-// 3. CARGAR LISTA DE USUARIOS
 async function cargarUsuarios() {
     try {
         const response = await fetch('/admin/usuarios');
@@ -87,7 +82,6 @@ async function cargarUsuarios() {
     }
 }
 
-// 4. SISTEMA DE LOGIN
 async function intentarLogin() {
     const nombre = document.getElementById('selectUsuario').value;
     const pwd = document.getElementById('inputPassword').value;
@@ -111,12 +105,11 @@ async function intentarLogin() {
             adminActual = data.nombre;
             localStorage.setItem('modoAdmin', 'true');
             localStorage.setItem('adminNombre', data.nombre);
-            // NO GUARDAMOS LA CONTRASEÑA - se pedirá en cada operación
             
             alert(`¡Bienvenido ${data.nombre}! Modo administrador activado.`);
             cerrarModalLogin();
             actualizarInterfazAdmin();
-            cargarReproductores(); // Recargar para mostrar botones de eliminar
+            cargarReproductores(); 
         } else {
             alert('Usuario o contraseña incorrecta');
         }
@@ -126,7 +119,6 @@ async function intentarLogin() {
     }
 }
 
-// 5. VERIFICAR SI YA ESTABA LOGUEADO
 function verificarModoAdmin() {
     const guardado = localStorage.getItem('modoAdmin');
     const nombre = localStorage.getItem('adminNombre');
@@ -138,7 +130,6 @@ function verificarModoAdmin() {
     }
 }
 
-// 6. ACTUALIZAR INTERFAZ SEGÚN MODO ADMIN
 function actualizarInterfazAdmin() {
     const btnFloat = document.querySelector('.btn-floating');
     const btnAdmin = document.querySelector('.btn-admin');
@@ -164,14 +155,12 @@ function actualizarInterfazAdmin() {
     }
 }
 
-// 7. CERRAR SESIÓN
 function cerrarSesion() {
     if (confirm('¿Cerrar sesión de administrador?')) {
         modoAdmin = false;
         adminActual = null;
         localStorage.removeItem('modoAdmin');
         localStorage.removeItem('adminNombre');
-        // No hay contraseña guardada para borrar
         
         actualizarInterfazAdmin();
         cargarReproductores();
@@ -179,7 +168,6 @@ function cerrarSesion() {
     }
 }
 
-// 8. ELIMINAR REPRODUCTOR (CON AUTENTICACIÓN)
 async function eliminarReproductor(id) {
     if (!modoAdmin) {
         alert('Necesitás estar en modo administrador');
@@ -188,7 +176,6 @@ async function eliminarReproductor(id) {
     
     if (!confirm('¿Estás seguro de eliminar este reproductor?')) return;
     
-    // PEDIR CONTRASEÑA PARA CONFIRMAR
     const adminNombre = localStorage.getItem('adminNombre');
     const adminPwd = prompt(`🔐 ${adminNombre}, confirmá tu contraseña para eliminar:`);
     
@@ -217,7 +204,6 @@ async function eliminarReproductor(id) {
     }
 }
 
-// 9. AGREGAR REPRODUCTOR (CON AUTENTICACIÓN)
 const form = document.getElementById('formNuevoReproductor');
 if (form) {
     form.addEventListener('submit', async (e) => {
@@ -228,9 +214,6 @@ if (form) {
             return;
         }
         
-        const formData = new FormData(form);
-        
-        // TOMAR CONTRASEÑA DEL FORMULARIO (no del LocalStorage)
         const adminNombre = localStorage.getItem('adminNombre');
         const adminPwd = document.getElementById('adminPasswordAgregar').value;
         
@@ -238,9 +221,26 @@ if (form) {
             alert('Por favor ingresá tu contraseña');
             return;
         }
+
+        // PREVENCIÓN DE ARCHIVOS HEIC (iPhone)
+        const inputImagen = form.querySelector('input[name="imagen"]');
+        if (inputImagen && inputImagen.files.length > 0) {
+            const nombreArchivo = inputImagen.files[0].name.toLowerCase();
+            if (nombreArchivo.endsWith('.heic')) {
+                alert('⚠️ Formato .HEIC (iPhone) no soportado sin Cloudinary. Por favor, usá fotos .JPG o .PNG.');
+                return;
+            }
+        }
         
+        // Creamos FormData manualmente asegurando que las credenciales van primero
+        const formData = new FormData();
         formData.append('adminNombre', adminNombre);
         formData.append('adminPwd', adminPwd);
+
+        const originalData = new FormData(form);
+        for (let [key, value] of originalData.entries()) {
+            formData.append(key, value);
+        }
         
         try {
             const response = await fetch(API_URL, { 
@@ -264,7 +264,6 @@ if (form) {
     });
 }
 
-// 10. MODALES
 function abrirModal() { 
     if (!modoAdmin) {
         alert('Necesitás iniciar sesión como administrador');
@@ -286,13 +285,11 @@ function cerrarModalLogin() {
     document.getElementById('modalLogin').style.display = 'none'; 
 }
 
-// 11. WHATSAPP
 function consultarWhatsapp(nombre, rp) {
     const mensaje = `Hola, me interesa el reproductor ${nombre} (RP: ${rp}). ¿Está disponible?`;
     window.open(`https://wa.me/5493764231576?text=${encodeURIComponent(mensaje)}`, '_blank');
 }
 
-// 12. FILTROS
 document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
