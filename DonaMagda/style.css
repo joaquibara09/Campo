@@ -41,7 +41,7 @@ ul {
     list-style: none; 
 }
 
-img {
+img, video {
     max-width: 100%;
     height: auto;
 }
@@ -250,10 +250,12 @@ section {
     text-align: justify;
 }
 
-.columna-imagen img {
+.columna-imagen img,
+.columna-imagen video {
     width: 100%;
     border-radius: 1vh;
     box-shadow: var(--shadow);
+    object-fit: cover; /* Ayuda a que el video mantenga buenas proporciones */
 }
 
 /* --- ENFOQUE GRID (HOMEPAGE) --- */
