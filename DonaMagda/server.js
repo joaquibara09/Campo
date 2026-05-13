@@ -204,7 +204,7 @@ app.delete('/reproductores/:id', (req, res) => {
         });
     });
 });
-
+module.exports = app;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor listo en puerto ${PORT}`);
     console.log(`📂 Uploads en: ${UPLOADS_DIR}`);
