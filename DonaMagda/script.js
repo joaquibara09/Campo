@@ -5,7 +5,6 @@ let adminActual = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarReproductores();
-    cargarUsuarios();
     verificarModoAdmin();
 });
 
@@ -66,24 +65,8 @@ function renderizarReproductores(lista) {
     });
 }
 
-async function cargarUsuarios() {
-    try {
-        const response = await fetch('/admin/usuarios');
-        const usuarios = await response.json();
-        const select = document.getElementById('selectUsuario');
-        if (select) {
-            select.innerHTML = '<option value="">Seleccionar usuario...</option>';
-            usuarios.forEach(nombre => {
-                select.innerHTML += `<option value="${nombre}">${nombre}</option>`;
-            });
-        }
-    } catch (error) {
-        console.error('Error cargando usuarios:', error);
-    }
-}
-
 async function intentarLogin() {
-    const nombre = document.getElementById('selectUsuario').value;
+    const nombre = document.getElementById('inputUsuario').value.trim();
     const pwd = document.getElementById('inputPassword').value;
     
     if (!nombre || !pwd) {

@@ -280,9 +280,7 @@
             <form id="formLogin" onsubmit="event.preventDefault(); intentarLogin();">
                 <div class="form-group">
                     <label>Usuario:</label>
-                    <select id="selectUsuario" required>
-                        <option value="">Seleccionar...</option>
-                    </select>
+                    <input type="text" id="inputUsuario" required placeholder="Nombre de usuario" autocomplete="username">
                 </div>
                 
                 <div class="form-group">
