@@ -2273,7 +2273,13 @@ footer {
 
     /* Contactos rápidos stacked */
     .contactos-rapidos { flex-direction: column; gap: 12px; }
-    .contacto-rapido { width: 100%; justify-content: center; font-size: 15px; }
+    .contacto-rapido { width: 100%; justify-content: center; font-size: 16px; padding: 16px 20px; }
+    .contacto-rapido .icono { font-size: 28px; }
+    .contacto-rapido span { font-size: 16px; line-height: 1.4; }
+    .contacto-rapido small { font-size: 14px; font-weight: 600; }
+    .info-compra-box { padding: 32px 20px; max-width: 100%; }
+    .info-compra-box h2 { font-size: 22px; margin-bottom: 14px; }
+    .info-compra-box p { font-size: 15px; line-height: 1.55; margin-bottom: 24px; }
 
     /* CTA buttons stacked */
     .cta-buttons { flex-direction: column; gap: 12px; align-items: stretch; }
