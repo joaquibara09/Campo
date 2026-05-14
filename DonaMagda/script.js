@@ -2,11 +2,41 @@
 const API_URL = '/reproductores';
 let modoAdmin = false;
 let adminActual = null;
+let supabaseClient = null;
+let storageBucket = 'reproductores';
+
+async function initSupabase() {
+    try {
+        const res = await fetch('/config');
+        const cfg = await res.json();
+        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
+            console.error('Falta config de Supabase en el server');
+            return;
+        }
+        storageBucket = cfg.bucket || 'reproductores';
+        supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+    } catch (e) {
+        console.error('No pude inicializar Supabase:', e);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    initSupabase();
     cargarReproductores();
     verificarModoAdmin();
 });
+
+async function subirArchivoAStorage(file, carpeta) {
+    if (!supabaseClient) throw new Error('Supabase no inicializado');
+    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '');
+    const objectPath = `${carpeta}/${Date.now()}-${safeName}`;
+    const { error } = await supabaseClient.storage
+        .from(storageBucket)
+        .upload(objectPath, file, { contentType: file.type, upsert: false });
+    if (error) throw new Error(`Subida falló: ${error.message}`);
+    const { data } = supabaseClient.storage.from(storageBucket).getPublicUrl(objectPath);
+    return data.publicUrl;
+}
 
 async function cargarReproductores() {
     try {
@@ -205,32 +235,61 @@ if (form) {
             return;
         }
 
-        // PREVENCIÓN DE ARCHIVOS HEIC (iPhone)
         const inputImagen = form.querySelector('input[name="imagen"]');
-        if (inputImagen && inputImagen.files.length > 0) {
-            const nombreArchivo = inputImagen.files[0].name.toLowerCase();
-            if (nombreArchivo.endsWith('.heic')) {
-                alert('⚠️ Formato .HEIC (iPhone) no soportado sin Cloudinary. Por favor, usá fotos .JPG o .PNG.');
-                return;
-            }
-        }
-        
-        // Creamos FormData manualmente asegurando que las credenciales van primero
-        const formData = new FormData();
-        formData.append('adminNombre', adminNombre);
-        formData.append('adminPwd', adminPwd);
+        const inputDocumento = form.querySelector('input[name="documento"]');
 
-        const originalData = new FormData(form);
-        for (let [key, value] of originalData.entries()) {
-            formData.append(key, value);
+        if (!inputImagen || inputImagen.files.length === 0) {
+            alert('Tenés que seleccionar una imagen');
+            return;
         }
-        
+
+        const archivoImagen = inputImagen.files[0];
+        if (archivoImagen.name.toLowerCase().endsWith('.heic')) {
+            alert('⚠️ Formato .HEIC (iPhone) no soportado. Usá .JPG o .PNG.');
+            return;
+        }
+
+        if (!supabaseClient) {
+            alert('Supabase no se inicializó. Refrescá la página y reintenta.');
+            return;
+        }
+
+        const btnSubmit = form.querySelector('button[type="submit"]');
+        const textoOriginal = btnSubmit ? btnSubmit.textContent : '';
+        if (btnSubmit) { btnSubmit.disabled = true; btnSubmit.textContent = 'Subiendo imagen...'; }
+
         try {
-            const response = await fetch(API_URL, { 
-                method: 'POST', 
-                body: formData 
+            const imagenUrl = await subirArchivoAStorage(archivoImagen, 'imagenes');
+
+            let documentoUrl = null;
+            if (inputDocumento && inputDocumento.files.length > 0) {
+                if (btnSubmit) btnSubmit.textContent = 'Subiendo documento...';
+                documentoUrl = await subirArchivoAStorage(inputDocumento.files[0], 'documentos');
+            }
+
+            if (btnSubmit) btnSubmit.textContent = 'Guardando...';
+
+            const payload = {
+                adminNombre,
+                adminPwd,
+                nombre: form.nombre.value,
+                categoria: form.categoria.value,
+                destacado: form.destacado.value,
+                rp: form.rp.value,
+                fechaNac: form.fechaNac.value,
+                peso: form.peso.value,
+                caracteristicas: form.caracteristicas.value,
+                descripcion: form.descripcion.value,
+                imagen: imagenUrl,
+                documento: documentoUrl
+            };
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
-            
+
             if (response.ok) {
                 alert('¡Reproductor agregado con éxito!');
                 form.reset();
@@ -238,11 +297,13 @@ if (form) {
                 cargarReproductores();
             } else {
                 const error = await response.json();
-                alert('Error: ' + (error.error || 'Contraseña incorrecta o no autorizado'));
+                alert('Error: ' + (error.error || 'No autorizado'));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error de conexión');
+            alert('Error: ' + error.message);
+        } finally {
+            if (btnSubmit) { btnSubmit.disabled = false; btnSubmit.textContent = textoOriginal; }
         }
     });
 }

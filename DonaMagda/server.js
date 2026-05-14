@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
@@ -9,57 +8,37 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
 const STORAGE_BUCKET = process.env.SUPABASE_BUCKET || 'reproductores';
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
+if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     console.warn('⚠️  Faltan SUPABASE_URL o SUPABASE_ANON_KEY/SUPABASE_SERVICE_ROLE_KEY en el entorno');
-}
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.warn('⚠️  Sin SUPABASE_SERVICE_ROLE_KEY, las subidas a Storage requieren políticas RLS de INSERT en el bucket');
 }
 
 const supabase = createClient(
     SUPABASE_URL || 'https://placeholder.supabase.co',
-    SUPABASE_KEY || 'placeholder-key'
+    SUPABASE_SERVICE_KEY || 'placeholder-key'
 );
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Bloqueo de archivos heredados (por si quedan en disco)
 app.get(['/pwd.json', '/reproductores.json'], (req, res) => {
     res.status(403).send('Acceso denegado');
 });
 
-// Servir la web estática
 app.use(express.static(__dirname));
 
-// --- Multer en memoria: el buffer va directo a Supabase Storage ---
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 10 * 1024 * 1024 }
+// --- Config pública para el frontend (URL + anon key) ---
+app.get('/config', (req, res) => {
+    res.json({
+        supabaseUrl: SUPABASE_URL,
+        supabaseAnonKey: SUPABASE_ANON_KEY,
+        bucket: STORAGE_BUCKET
+    });
 });
-
-// --- Helpers de Supabase Storage ---
-async function subirAStorage(file, carpeta) {
-    const safeName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '');
-    const objectPath = `${carpeta}/${Date.now()}-${safeName}`;
-
-    const { error } = await supabase
-        .storage
-        .from(STORAGE_BUCKET)
-        .upload(objectPath, file.buffer, {
-            contentType: file.mimetype,
-            upsert: false
-        });
-
-    if (error) throw new Error(`Storage upload falló: ${error.message}`);
-
-    const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(objectPath);
-    return { url: data.publicUrl, path: objectPath };
-}
 
 function pathDesdeUrl(publicUrl) {
     if (!publicUrl) return null;
@@ -76,7 +55,6 @@ async function eliminarDeStorage(publicUrl) {
     if (error) console.warn(`No se pudo borrar ${objectPath}: ${error.message}`);
 }
 
-// --- Validación de credenciales contra Supabase ---
 async function validarCredenciales(nombre, pwd) {
     if (!nombre || !pwd) return null;
     const { data, error } = await supabase
@@ -92,27 +70,19 @@ async function validarCredenciales(nombre, pwd) {
     return data || null;
 }
 
-// --- RUTAS ---
-
-// LOGIN
 app.post('/admin/login', async (req, res) => {
     const { nombre, pwd } = req.body;
     const usuario = await validarCredenciales(nombre, pwd);
 
     if (usuario) {
         console.log(`✅ Login exitoso: ${nombre}`);
-        res.json({
-            success: true,
-            nombre: usuario.nombre,
-            rol: usuario.rol
-        });
+        res.json({ success: true, nombre: usuario.nombre, rol: usuario.rol });
     } else {
         console.log(`❌ Login fallido: ${nombre}`);
         res.status(401).json({ success: false, mensaje: 'Credenciales incorrectas' });
     }
 });
 
-// LISTA DE USUARIOS
 app.get('/admin/usuarios', async (req, res) => {
     const { data, error } = await supabase.from('usuarios').select('nombre');
     if (error) {
@@ -122,7 +92,6 @@ app.get('/admin/usuarios', async (req, res) => {
     res.json((data || []).map(u => u.nombre));
 });
 
-// LISTA DE REPRODUCTORES
 app.get('/reproductores', async (req, res) => {
     const { data, error } = await supabase
         .from('reproductores')
@@ -135,15 +104,10 @@ app.get('/reproductores', async (req, res) => {
     res.json(data || []);
 });
 
-// ALTA DE REPRODUCTOR
-app.post('/reproductores', upload.fields([
-    { name: 'imagen', maxCount: 1 },
-    { name: 'documento', maxCount: 1 }
-]), async (req, res) => {
-    console.log('--- Intento de subida detectado ---');
-
+// ALTA — el frontend ya subió a Storage, recibimos solo URLs + metadata.
+app.post('/reproductores', async (req, res) => {
     try {
-        const { adminNombre, adminPwd } = req.body;
+        const { adminNombre, adminPwd, ...datos } = req.body;
         const usuario = await validarCredenciales(adminNombre, adminPwd);
 
         if (!usuario) {
@@ -151,34 +115,24 @@ app.post('/reproductores', upload.fields([
             return res.status(401).json({ error: 'No autorizado' });
         }
 
-        if (!req.files || !req.files.imagen) {
-            console.log('❌ Error: No se recibió imagen');
-            return res.status(400).json({ error: 'Falta la imagen' });
-        }
-
-        console.log(`✅ Autorizado por: ${usuario.nombre}`);
-
-        const imagenUpload = await subirAStorage(req.files.imagen[0], 'imagenes');
-        console.log(`📷 Imagen subida: ${imagenUpload.path}`);
-
-        let documentoUpload = null;
-        if (req.files.documento) {
-            documentoUpload = await subirAStorage(req.files.documento[0], 'documentos');
-            console.log(`📄 Documento subido: ${documentoUpload.path}`);
+        if (!datos.imagen) {
+            return res.status(400).json({ error: 'Falta la URL de la imagen' });
         }
 
         const nuevo = {
             id: Date.now(),
-            nombre: req.body.nombre,
-            categoria: req.body.categoria,
-            destacado: req.body.destacado === 'true',
-            rp: req.body.rp,
-            fechaNac: req.body.fechaNac,
-            peso: req.body.peso,
-            imagen: imagenUpload.url,
-            documento: documentoUpload ? documentoUpload.url : null,
-            caracteristicas: req.body.caracteristicas ? req.body.caracteristicas.split(',').map(t => t.trim()) : [],
-            descripcion: req.body.descripcion,
+            nombre: datos.nombre,
+            categoria: datos.categoria,
+            destacado: datos.destacado === true || datos.destacado === 'true',
+            rp: datos.rp,
+            fechaNac: datos.fechaNac,
+            peso: datos.peso,
+            imagen: datos.imagen,
+            documento: datos.documento || null,
+            caracteristicas: Array.isArray(datos.caracteristicas)
+                ? datos.caracteristicas
+                : (datos.caracteristicas || '').split(',').map(t => t.trim()).filter(Boolean),
+            descripcion: datos.descripcion,
             publicadoPor: usuario.nombre,
             fechaPublicacion: new Date().toISOString()
         };
@@ -191,13 +145,12 @@ app.post('/reproductores', upload.fields([
 
         if (error) {
             console.error('❌ Error al insertar:', error.message);
-            // Rollback de archivos ya subidos
-            await eliminarDeStorage(imagenUpload.url);
-            if (documentoUpload) await eliminarDeStorage(documentoUpload.url);
+            await eliminarDeStorage(nuevo.imagen);
+            if (nuevo.documento) await eliminarDeStorage(nuevo.documento);
             return res.status(500).json({ error: 'Error guardando datos' });
         }
 
-        console.log(`💾 Registro guardado por ${usuario.nombre}`);
+        console.log(`💾 Reproductor guardado por ${usuario.nombre}`);
         res.json(data);
     } catch (error) {
         console.error('❌ Error crítico:', error);
@@ -205,15 +158,12 @@ app.post('/reproductores', upload.fields([
     }
 });
 
-// BAJA DE REPRODUCTOR
 app.delete('/reproductores/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     const { adminNombre, adminPwd } = req.body;
 
     const usuario = await validarCredenciales(adminNombre, adminPwd);
-
     if (!usuario) {
-        console.log('❌ Autenticación fallida al eliminar');
         return res.status(401).json({ error: 'No autorizado' });
     }
 

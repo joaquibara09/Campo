@@ -55,9 +55,17 @@ on conflict (nombre) do nothing;
 --   - Public bucket: ✅ (para que las URLs sean accesibles desde el navegador)
 --   - File size limit: 10 MB
 --
--- El servidor (con SUPABASE_SERVICE_ROLE_KEY) puede subir/borrar sin políticas extra.
--- Si NO usás service_role, agregá políticas de INSERT/DELETE al bucket en
--- Storage → Policies (puede ser solo para autenticados, o abierto si no querés auth).
+-- IMPORTANTE: como el browser sube los archivos directo a Storage usando
+-- la anon key (para evitar el límite de 4.5MB de Vercel), hay que crear
+-- una política que permita INSERT al rol anon en este bucket:
+--
+-- Storage → Policies → New policy → For full customization:
+--   - Policy name: Public anon insert
+--   - Allowed operation: INSERT
+--   - Target roles: anon, authenticated
+--   - WITH CHECK expression: bucket_id = 'reproductores'
+--
+-- El DELETE sigue siendo solo desde el server con SUPABASE_SERVICE_ROLE_KEY.
 --
 -- Estructura interna del bucket:
 --   reproductores/
