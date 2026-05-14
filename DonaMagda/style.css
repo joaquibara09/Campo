@@ -17,6 +17,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     color: var(--texto-oscuro);
@@ -2178,25 +2183,47 @@ footer {
     /* Grids pesados (con mucho contenido por card): 1 columna */
     .ubicacion-info, .sedes-grid, .reproductores-grid,
     .ventajas-grid, .caracteristicas-fisicas,
-    .objetivos-principales-grid, .footer-content {
+    .contactos-grid, .footer-content {
         grid-template-columns: 1fr;
     }
 
     /* Grids livianos: mantener 2 columnas para que se vea orgánico (como tablet) */
-    .enfoque-grid, .beneficios-grid, .contactos-grid,
-    .evaluacion-grid, .valor-premios-grid {
+    .enfoque-grid, .beneficios-grid,
+    .evaluacion-grid, .valor-premios-grid,
+    .objetivos-principales-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
     }
-    .enfoque-card, .beneficio-card, .contacto-card,
-    .evaluacion-card, .valor-card {
-        padding: 18px 14px;
+    .enfoque-card, .beneficio-card,
+    .evaluacion-card, .valor-card,
+    .objetivo-principal-card {
+        padding: 20px 14px;
+        min-width: 0;
     }
     .enfoque-card h3, .beneficio-card h3,
-    .evaluacion-card h4, .valor-card h3 { font-size: 15px; }
+    .evaluacion-card h4, .valor-card h3,
+    .objetivo-principal-card h3 { font-size: 16px; line-height: 1.3; }
     .enfoque-card p, .beneficio-card p,
-    .evaluacion-card p, .valor-card p { font-size: 13.5px; line-height: 1.5; }
-    .enfoque-icono, .objetivo-icono-grande, .contacto-icono { font-size: 34px; }
+    .evaluacion-card p, .valor-card p,
+    .objetivo-principal-card > p { font-size: 14px; line-height: 1.5; }
+    .objetivo-principal-card .lista-detalles li { font-size: 13px; line-height: 1.5; }
+    .enfoque-icono, .objetivo-icono-grande, .contacto-icono { font-size: 36px; margin-bottom: 8px; }
+
+    /* Evitar overflow horizontal con strings largos (emails, URLs) */
+    .contacto-datos a, .contacto-datos p,
+    .footer-col a, .footer-col p,
+    .sede-direccion, .sede-descripcion {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+    .contacto-card, .footer-col { min-width: 0; }
+
+    /* Contactos en 1 columna (mucho contenido por card) con mejor jerarquía */
+    .contacto-card { padding: 22px 18px; }
+    .contacto-nombre { font-size: 17px; }
+    .contacto-cargo { font-size: 14px; }
+    .contacto-datos p { font-size: 15px; }
+    .contacto-descripcion { font-size: 15px; line-height: 1.55; }
 
     /* Catálogo de reproductores: 1 col centrado y más compacto */
     .catalogo-grid {
@@ -2205,6 +2232,7 @@ footer {
         margin: 0 auto;
         gap: 22px;
     }
+    .reproductor-item { min-width: 0; }
     .reproductor-imagen { height: 220px; }
     .reproductor-info { padding: 22px 18px 20px; }
     .reproductor-nombre { font-size: 22px; margin-bottom: 14px; }
@@ -2279,14 +2307,32 @@ footer {
         margin-bottom: 8px;
     }
 
-    /* Tablas: ya con scroll, achicar más */
-    th, td { font-size: 13px; padding: 10px; }
+    /* Tabla de logros: que el contenido envuelva para no obligar scroll horizontal */
+    .tabla-premios {
+        overflow-x: visible;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .tabla-premios table { table-layout: fixed; width: 100%; }
+    th, td {
+        font-size: 13px;
+        padding: 10px 8px;
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+    td small { font-size: 12px; }
+
+    /* Footer texto largo */
+    .footer-col p, .footer-col a { font-size: 14px; word-break: break-word; overflow-wrap: anywhere; }
+    .white-logo { font-size: 24px; }
 }
 
 /* --- MOBILE muy chico (≤400px): bajar a 1 col los grids livianos también --- */
 @media (max-width: 400px) {
-    .enfoque-grid, .beneficios-grid, .contactos-grid,
-    .evaluacion-grid, .valor-premios-grid {
+    .enfoque-grid, .beneficios-grid,
+    .evaluacion-grid, .valor-premios-grid,
+    .objetivos-principales-grid {
         grid-template-columns: 1fr;
     }
 }
