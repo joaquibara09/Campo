@@ -28,7 +28,7 @@ body {
     line-height: 1.6;
     background-color: var(--crudo);
     scroll-behavior: smooth;
-    font-size: 0.9vw;
+    font-size: 13px;
 }
 
 h1, h2, h3, h4 {
@@ -103,7 +103,7 @@ nav {
 }
 
 .nav-links a {
-    font-size: 0.9vw;
+    font-size: 13px;
     position: relative;
 }
 
@@ -123,7 +123,7 @@ nav {
     padding: 1vh 1.5vw;
     border-radius: 0.5vh;
     font-weight: 600;
-    font-size: 0.85vw;
+    font-size: 12px;
     box-shadow: 0 0.2vh 0.5vh rgba(0,0,0,0.1);
 }
 
@@ -147,7 +147,7 @@ nav {
 }
 
 .hero h1 {
-    font-size: 4.5vw;
+    font-size: 48px;
     margin-bottom: 2vh;
     text-shadow: 0.2vw 0.2vw 1vw rgba(0,0,0,0.8);
     text-transform: uppercase;
@@ -156,7 +156,7 @@ nav {
 }
 
 .hero p {
-    font-size: 1.2vw;
+    font-size: 17px;
     max-width: 60vw;
     margin: 0 auto;
 }
@@ -188,14 +188,14 @@ nav {
 }
 
 .hero-interno h1 {
-    font-size: 3.5vw;
+    font-size: 48px;
     margin-bottom: 1.5vh;
     text-transform: uppercase;
     letter-spacing: 0.15vw;
 }
 
 .hero-interno p {
-    font-size: 1.1vw;
+    font-size: 16px;
     opacity: 0.95;
 }
 
@@ -210,7 +210,7 @@ section {
 }
 
 .section-title h2 {
-    font-size: 2.8vw;
+    font-size: 40px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
@@ -224,7 +224,7 @@ section {
 
 /* --- TEXTOS DESTACADOS --- */
 .destacado {
-    font-size: 1.15vw;
+    font-size: 17px;
     color: var(--verde-monte);
     font-weight: 600;
     line-height: 1.8;
@@ -238,7 +238,7 @@ section {
 .intro-objetivos {
     max-width: 75vw;
     margin: 0 auto;
-    font-size: 1vw;
+    font-size: 14px;
 }
 
 /* --- LAYOUTS DE DOS COLUMNAS --- */
@@ -251,7 +251,7 @@ section {
 
 .columna-texto p {
     margin-bottom: 2vh;
-    font-size: 1vw;
+    font-size: 14px;
     text-align: justify;
 }
 
@@ -285,18 +285,18 @@ section {
 }
 
 .enfoque-icono {
-    font-size: 3.5vw;
+    font-size: 48px;
     margin-bottom: 2vh;
 }
 
 .enfoque-card h3 {
-    font-size: 1.4vw;
+    font-size: 20px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
 
 .enfoque-card p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
 }
 
@@ -315,13 +315,13 @@ section {
 }
 
 .ubicacion-card h3 {
-    font-size: 1.6vw;
+    font-size: 23px;
     color: var(--tierra-colorada);
     margin-bottom: 2.5vh;
 }
 
 .ubicacion-card p {
-    font-size: 0.95vw;
+    font-size: 14px;
     margin-bottom: 1vh;
 }
 
@@ -347,13 +347,13 @@ section {
 }
 
 .beneficio-card h3 {
-    font-size: 1.2vw;
+    font-size: 17px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
 
 .beneficio-card p {
-    font-size: 0.9vw;
+    font-size: 13px;
     color: var(--gris-texto);
 }
 
@@ -372,13 +372,13 @@ section {
 }
 
 .caracteristica-item h4 {
-    font-size: 1.3vw;
+    font-size: 19px;
     color: var(--tierra-colorada);
     margin-bottom: 1.5vh;
 }
 
 .caracteristica-item p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
 }
 
@@ -391,7 +391,7 @@ section {
 
 .lista-beneficios li {
     margin-bottom: 1.5vh;
-    font-size: 0.95vw;
+    font-size: 14px;
     padding-left: 2vw;
     position: relative;
 }
@@ -402,7 +402,7 @@ section {
     left: 0;
     color: var(--verde-claro);
     font-weight: bold;
-    font-size: 1.1vw;
+    font-size: 16px;
 }
 
 /* --- REPRODUCTORES --- */
@@ -421,7 +421,7 @@ section {
 }
 
 .reproductor-card h2 {
-    font-size: 2vw;
+    font-size: 29px;
     color: var(--tierra-colorada);
     margin-bottom: 3vh;
     text-align: center;
@@ -430,7 +430,7 @@ section {
 }
 
 .caracteristicas-detalladas h3 {
-    font-size: 1.2vw;
+    font-size: 17px;
     color: var(--verde-monte);
     margin-top: 2.5vh;
     margin-bottom: 1.5vh;
@@ -444,7 +444,7 @@ section {
 
 .lista-caracteristicas li {
     margin-bottom: 1vh;
-    font-size: 0.9vw;
+    font-size: 13px;
     padding-left: 1.8vw;
     position: relative;
     color: var(--gris-texto);
@@ -456,7 +456,7 @@ section {
     left: 0;
     color: var(--verde-claro);
     font-weight: bold;
-    font-size: 1vw;
+    font-size: 14px;
 }
 
 /* --- VENTAJAS GRID --- */
@@ -479,7 +479,7 @@ section {
     position: absolute;
     top: 3vh;
     left: 2vw;
-    font-size: 2.5vw;
+    font-size: 36px;
     font-weight: 700;
     color: var(--tierra-colorada);
     opacity: 0.3;
@@ -487,13 +487,13 @@ section {
 }
 
 .ventaja-item h4 {
-    font-size: 1.3vw;
+    font-size: 19px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
 
 .ventaja-item p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
 }
 
@@ -513,13 +513,13 @@ section {
 }
 
 .evaluacion-card h4 {
-    font-size: 1.2vw;
+    font-size: 17px;
     color: var(--tierra-colorada);
     margin-bottom: 1.5vh;
 }
 
 .evaluacion-card p {
-    font-size: 0.9vw;
+    font-size: 13px;
     color: var(--gris-texto);
 }
 
@@ -545,20 +545,20 @@ section {
 }
 
 .objetivo-icono-grande {
-    font-size: 3vw;
+    font-size: 43px;
     text-align: center;
     margin-bottom: 2vh;
 }
 
 .objetivo-principal-card h3 {
-    font-size: 1.4vw;
+    font-size: 20px;
     color: var(--verde-monte);
     margin-bottom: 2vh;
     text-align: center;
 }
 
 .objetivo-principal-card > p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
     margin-bottom: 2vh;
     text-align: justify;
@@ -574,7 +574,7 @@ section {
 
 .lista-detalles li {
     margin-bottom: 1vh;
-    font-size: 0.85vw;
+    font-size: 12px;
     padding-left: 1.5vw;
     position: relative;
     color: var(--gris-texto);
@@ -596,7 +596,7 @@ section {
 
 .compromiso-texto p {
     margin-bottom: 2.5vh;
-    font-size: 1vw;
+    font-size: 14px;
     text-align: justify;
 }
 
@@ -619,19 +619,19 @@ th {
     color: var(--crudo);
     padding: 2vh 1.5vw;
     text-align: left;
-    font-size: 0.9vw;
+    font-size: 13px;
     text-transform: uppercase;
 }
 
 td { 
     padding: 2.5vh 1.5vw; 
     border-bottom: 0.1vh solid rgba(0,0,0,0.05); 
-    font-size: 0.9vw;
+    font-size: 13px;
     vertical-align: top;
 }
 
 td small {
-    font-size: 0.75vw;
+    font-size: 11px;
     color: var(--gris-texto);
     display: block;
     margin-top: 0.5vh;
@@ -656,13 +656,13 @@ tr:hover {
 }
 
 .valor-card h3 {
-    font-size: 1.3vw;
+    font-size: 19px;
     color: var(--tierra-colorada);
     margin-bottom: 1.5vh;
 }
 
 .valor-card p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
     text-align: justify;
 }
@@ -682,13 +682,13 @@ tr:hover {
 }
 
 .exposicion-item h4 {
-    font-size: 1.3vw;
+    font-size: 19px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
 
 .exposicion-item p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
     text-align: justify;
 }
@@ -704,7 +704,7 @@ tr:hover {
 }
 
 .testimonio-box blockquote {
-    font-size: 1.1vw;
+    font-size: 16px;
     font-style: italic;
     color: var(--verde-monte);
     margin-bottom: 2vh;
@@ -712,7 +712,7 @@ tr:hover {
 }
 
 .autor-testimonio {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
     font-weight: 600;
     text-align: right;
@@ -747,24 +747,24 @@ tr:hover {
 }
 
 .contacto-icono {
-    font-size: 3vw;
+    font-size: 43px;
     margin-bottom: 1.5vh;
 }
 
 .contacto-header h3 {
-    font-size: 1.5vw;
+    font-size: 22px;
     color: var(--verde-monte);
 }
 
 .contacto-nombre {
-    font-size: 1.2vw;
+    font-size: 17px;
     font-weight: 600;
     color: var(--texto-oscuro);
     margin-bottom: 0.5vh;
 }
 
 .contacto-cargo {
-    font-size: 0.85vw;
+    font-size: 12px;
     color: var(--gris-texto);
     margin-bottom: 2vh;
     font-style: italic;
@@ -778,7 +778,7 @@ tr:hover {
 }
 
 .contacto-datos p {
-    font-size: 0.9vw;
+    font-size: 13px;
     margin-bottom: 1vh;
 }
 
@@ -793,7 +793,7 @@ tr:hover {
 }
 
 .contacto-descripcion {
-    font-size: 0.85vw;
+    font-size: 12px;
     color: var(--gris-texto);
     line-height: 1.6;
 }
@@ -813,19 +813,19 @@ tr:hover {
 }
 
 .sede-card h3 {
-    font-size: 1.6vw;
+    font-size: 23px;
     color: var(--tierra-colorada);
     margin-bottom: 2.5vh;
 }
 
 .sede-direccion {
-    font-size: 1vw;
+    font-size: 14px;
     margin-bottom: 2vh;
     line-height: 1.8;
 }
 
 .sede-descripcion {
-    font-size: 0.9vw;
+    font-size: 13px;
     color: var(--gris-texto);
     line-height: 1.6;
 }
@@ -845,13 +845,13 @@ tr:hover {
 }
 
 .faq-item h4 {
-    font-size: 1.2vw;
+    font-size: 17px;
     color: var(--verde-monte);
     margin-bottom: 1.5vh;
 }
 
 .faq-item p {
-    font-size: 0.95vw;
+    font-size: 14px;
     color: var(--gris-texto);
     line-height: 1.7;
 }
@@ -863,13 +863,13 @@ tr:hover {
 }
 
 .cta-section h2 {
-    font-size: 2.5vw;
+    font-size: 36px;
     color: var(--verde-monte);
     margin-bottom: 2vh;
 }
 
 .cta-section p {
-    font-size: 1.1vw;
+    font-size: 16px;
     color: var(--gris-texto);
     margin-bottom: 4vh;
 }
@@ -885,7 +885,7 @@ tr:hover {
 .btn-secondary {
     padding: 1.5vh 3vw;
     border-radius: 0.5vh;
-    font-size: 1vw;
+    font-size: 14px;
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 0.3vh 1vh rgba(0,0,0,0.1);
@@ -929,7 +929,7 @@ footer {
 }
 
 .white-logo {
-    font-size: 1.8vw;
+    font-size: 26px;
     font-weight: 900;
     margin-bottom: 2vh;
     color: var(--crudo);
@@ -937,7 +937,7 @@ footer {
 }
 
 .footer-col h4 {
-    font-size: 1.1vw;
+    font-size: 16px;
     margin-bottom: 2.5vh;
     position: relative;
 }
@@ -954,7 +954,7 @@ footer {
 
 .footer-col p, 
 .footer-col a {
-    font-size: 0.85vw;
+    font-size: 12px;
     margin-bottom: 1.5vh;
 }
 
@@ -962,13 +962,13 @@ footer {
     text-align: center;
     padding-top: 3vh;
     border-top: 0.1vh solid rgba(255, 255, 255, 0.2);
-    font-size: 0.75vw;
+    font-size: 11px;
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     body { 
-        font-size: 3.5vw; 
+        font-size: 48px; 
     }
     
     nav { 
@@ -980,28 +980,28 @@ footer {
     }
     
     .hero h1 { 
-        font-size: 8vw; 
+        font-size: 48px; 
     }
     
     .hero p { 
-        font-size: 4vw; 
+        font-size: 48px; 
         max-width: 80vw; 
     }
 
     .hero-interno h1 {
-        font-size: 7vw;
+        font-size: 48px;
     }
 
     .hero-interno p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
     
     .section-title h2 { 
-        font-size: 6vw; 
+        font-size: 48px; 
     }
 
     .destacado {
-        font-size: 4vw;
+        font-size: 48px;
     }
 
     .intro-texto,
@@ -1011,7 +1011,7 @@ footer {
     .intro-objetivos,
     .compromiso-texto {
         max-width: 95vw;
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .contenido-dos-columnas {
@@ -1020,7 +1020,7 @@ footer {
     }
 
     .columna-texto p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .enfoque-grid {
@@ -1028,15 +1028,15 @@ footer {
     }
 
     .enfoque-icono {
-        font-size: 10vw;
+        font-size: 48px;
     }
 
     .enfoque-card h3 {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .enfoque-card p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .ubicacion-info {
@@ -1044,11 +1044,11 @@ footer {
     }
 
     .ubicacion-card h3 {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .ubicacion-card p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .beneficios-grid {
@@ -1056,11 +1056,11 @@ footer {
     }
 
     .beneficio-card h3 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .beneficio-card p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .caracteristicas-fisicas {
@@ -1068,15 +1068,15 @@ footer {
     }
 
     .caracteristica-item h4 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .caracteristica-item p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .lista-beneficios li {
-        font-size: 3.5vw;
+        font-size: 48px;
         padding-left: 6vw;
     }
 
@@ -1085,15 +1085,15 @@ footer {
     }
 
     .reproductor-card h2 {
-        font-size: 6vw;
+        font-size: 48px;
     }
 
     .caracteristicas-detalladas h3 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .lista-caracteristicas li {
-        font-size: 3.5vw;
+        font-size: 48px;
         padding-left: 6vw;
     }
 
@@ -1107,18 +1107,18 @@ footer {
     }
 
     .ventaja-numero {
-        font-size: 8vw;
+        font-size: 48px;
         left: 4vw;
     }
 
     .ventaja-item h4,
     .evaluacion-card h4 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .ventaja-item p,
     .evaluacion-card p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .objetivos-principales-grid {
@@ -1126,29 +1126,29 @@ footer {
     }
 
     .objetivo-icono-grande {
-        font-size: 10vw;
+        font-size: 48px;
     }
 
     .objetivo-principal-card h3 {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .objetivo-principal-card > p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .lista-detalles li {
-        font-size: 3vw;
+        font-size: 43px;
         padding-left: 5vw;
     }
 
     th, td {
-        font-size: 3vw;
+        font-size: 43px;
         padding: 2vh 3vw;
     }
 
     td small {
-        font-size: 2.5vw;
+        font-size: 36px;
     }
 
     .valor-premios-grid {
@@ -1156,19 +1156,19 @@ footer {
     }
 
     .valor-card h3 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .valor-card p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .exposicion-item h4 {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .exposicion-item p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .testimonio-box {
@@ -1177,11 +1177,11 @@ footer {
     }
 
     .testimonio-box blockquote {
-        font-size: 4vw;
+        font-size: 48px;
     }
 
     .autor-testimonio {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .contactos-grid {
@@ -1189,27 +1189,27 @@ footer {
     }
 
     .contacto-icono {
-        font-size: 10vw;
+        font-size: 48px;
     }
 
     .contacto-header h3 {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .contacto-nombre {
-        font-size: 4.5vw;
+        font-size: 48px;
     }
 
     .contacto-cargo {
-        font-size: 3vw;
+        font-size: 43px;
     }
 
     .contacto-datos p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .contacto-descripcion {
-        font-size: 3.2vw;
+        font-size: 46px;
     }
 
     .sedes-grid {
@@ -1217,36 +1217,36 @@ footer {
     }
 
     .sede-card h3 {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .sede-direccion {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .sede-descripcion {
-        font-size: 3.2vw;
+        font-size: 46px;
     }
 
     .faq-item h4 {
-        font-size: 4vw;
+        font-size: 48px;
     }
 
     .faq-item p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .cta-section h2 {
-        font-size: 6vw;
+        font-size: 48px;
     }
 
     .cta-section p {
-        font-size: 3.8vw;
+        font-size: 48px;
     }
 
     .btn-primary,
     .btn-secondary {
-        font-size: 3.5vw;
+        font-size: 48px;
         padding: 2vh 6vw;
     }
 
@@ -1267,11 +1267,11 @@ footer {
     }
     
     .white-logo { 
-        font-size: 6vw; 
+        font-size: 48px; 
     }
     
     .copyright { 
-        font-size: 3vw; 
+        font-size: 43px; 
     }
 
     /* Catálogo responsive */
@@ -1282,7 +1282,7 @@ footer {
 
     .filtro-btn {
         width: 100%;
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .catalogo-grid {
@@ -1290,36 +1290,36 @@ footer {
     }
 
     .reproductor-nombre {
-        font-size: 5vw;
+        font-size: 48px;
     }
 
     .reproductor-descripcion {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .detalle-label,
     .detalle-valor {
-        font-size: 3vw;
+        font-size: 43px;
     }
 
     .reproductor-categoria {
-        font-size: 3vw;
+        font-size: 43px;
     }
 
     .tag {
-        font-size: 2.8vw;
+        font-size: 40px;
     }
 
     .btn-consultar {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .info-compra-box h2 {
-        font-size: 5.5vw;
+        font-size: 48px;
     }
 
     .info-compra-box p {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 
     .contactos-rapidos {
@@ -1327,7 +1327,7 @@ footer {
     }
 
     .contacto-rapido {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 }
 
@@ -1354,7 +1354,7 @@ footer {
     border: 0.2vh solid var(--verde-monte);
     border-radius: 0.5vh;
     color: var(--verde-monte);
-    font-size: 0.95vw;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1424,7 +1424,7 @@ footer {
     color: var(--crudo);
     padding: 0.8vh 1.5vw;
     border-radius: 0.5vh;
-    font-size: 0.75vw;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     box-shadow: 0 0.2vh 0.8vh rgba(0,0,0,0.2);
@@ -1445,7 +1445,7 @@ footer {
     color: var(--crudo);
     padding: 0.5vh 1.2vw;
     border-radius: 0.3vh;
-    font-size: 0.75vw;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     margin-bottom: 1.5vh;
@@ -1456,7 +1456,7 @@ footer {
 }
 
 .reproductor-nombre {
-    font-size: 1.6vw;
+    font-size: 23px;
     color: var(--verde-monte);
     margin-bottom: 2vh;
     font-family: 'Playfair Display', serif;
@@ -1483,17 +1483,17 @@ footer {
 .detalle-label {
     font-weight: 600;
     color: var(--gris-texto);
-    font-size: 0.85vw;
+    font-size: 12px;
 }
 
 .detalle-valor {
     color: var(--texto-oscuro);
-    font-size: 0.85vw;
+    font-size: 12px;
 }
 
 /* --- DESCRIPCIÓN --- */
 .reproductor-descripcion {
-    font-size: 0.9vw;
+    font-size: 13px;
     color: var(--gris-texto);
     line-height: 1.6;
     margin-bottom: 2vh;
@@ -1514,7 +1514,7 @@ footer {
     color: var(--verde-monte);
     padding: 0.5vh 1vw;
     border-radius: 0.3vh;
-    font-size: 0.75vw;
+    font-size: 11px;
     font-weight: 500;
 }
 
@@ -1526,7 +1526,7 @@ footer {
     color: var(--crudo);
     border: none;
     border-radius: 0.5vh;
-    font-size: 0.9vw;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1548,7 +1548,7 @@ footer {
     color: var(--crudo);
     border: none;
     border-radius: 0.5vh;
-    font-size: 0.85vw;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1576,13 +1576,13 @@ footer {
 }
 
 .info-compra-box h2 {
-    font-size: 2.2vw;
+    font-size: 28px;
     color: var(--verde-monte);
     margin-bottom: 2.5vh;
 }
 
 .info-compra-box p {
-    font-size: 1vw;
+    font-size: 16px;
     color: var(--gris-texto);
     line-height: 1.7;
     margin-bottom: 4vh;
@@ -1615,16 +1615,16 @@ footer {
 }
 
 .contacto-rapido .icono {
-    font-size: 2.5vw;
+    font-size: 30px;
 }
 
 .contacto-rapido span {
-    font-size: 0.95vw;
+    font-size: 16px;
     line-height: 1.4;
 }
 
 .contacto-rapido small {
-    font-size: 0.85vw;
+    font-size: 14px;
     font-weight: 600;
 }
 
@@ -1695,7 +1695,7 @@ footer {
     display: block;
     font-weight: 600;
     margin-bottom: 0.5vh;
-    font-size: 0.9vw;
+    font-size: 13px;
     color: var(--gris-texto);
 }
 
@@ -1725,10 +1725,10 @@ footer {
     .btn-floating {
         width: 12vw;
         height: 12vw;
-        font-size: 8vw;
+        font-size: 48px;
     }
     .form-group label {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
     .modal-content {
         width: 95%;
@@ -1785,7 +1785,7 @@ footer {
     .reproductor-badge {
         top: 1.5vh;
         right: 10vw;
-        font-size: 2.5vw;
+        font-size: 36px;
     }
 }
 /* ===============================================
@@ -1803,7 +1803,7 @@ footer {
     color: var(--crudo);
     padding: 0.8vh 1.5vw;
     border-radius: 0.5vh;
-    font-size: 1.2vw;
+    font-size: 17px;
     cursor: pointer;
     transition: all 0.3s ease;
     opacity: 0.6;
@@ -1828,7 +1828,7 @@ footer {
     color: var(--crudo);
     padding: 1vh 2vw;
     border-radius: 0.5vh;
-    font-size: 0.85vw;
+    font-size: 12px;
     font-weight: 600;
     z-index: 999;
     box-shadow: 0 0.3vh 1vh rgba(0,0,0,0.2);
@@ -1863,7 +1863,7 @@ footer {
 
 /* --- INFO DE PUBLICACIÓN --- */
 .info-publicacion {
-    font-size: 0.75vw;
+    font-size: 11px;
     color: var(--tierra-colorada);
     font-style: italic;
     margin-top: 1vh;
@@ -1900,20 +1900,20 @@ footer {
 /* --- RESPONSIVE PARA AUTENTICACIÓN --- */
 @media (max-width: 768px) {
     .btn-admin {
-        font-size: 4vw;
+        font-size: 48px;
         padding: 1vh 3vw;
         right: 3vw;
     }
 
     .indicador-admin {
-        font-size: 3vw;
+        font-size: 43px;
         top: 10vh;
         right: 3vw;
         padding: 1vh 3vw;
     }
 
     .info-publicacion {
-        font-size: 2.8vw;
+        font-size: 40px;
     }
 
     .modal-login {
@@ -1925,11 +1925,11 @@ footer {
     }
 
     .auth-confirm label {
-        font-size: 3.5vw !important;
+        font-size: 48px !important;
     }
 
     .auth-confirm input {
-        font-size: 3.5vw;
+        font-size: 48px;
     }
 }
 
