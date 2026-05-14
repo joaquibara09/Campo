@@ -2162,45 +2162,96 @@ footer {
     .contacto-rapido .icono { font-size: 24px; }
 }
 
-/* --- MOBILE (≤640px): todo en 1 columna --- */
+/* --- MOBILE (≤640px) --- */
 @media (max-width: 640px) {
-    body { font-size: 15px; }
+    body { font-size: 16px; line-height: 1.6; }
 
     .container, header .container { padding: 0 5vw; }
 
     /* Hero */
-    .hero h1 { font-size: 30px; letter-spacing: 1px; }
-    .hero p { font-size: 15px; }
-    .hero-interno h1 { font-size: 26px; }
-    .hero-interno p { font-size: 14px; }
-    .section-title h2 { font-size: 24px; }
+    .hero h1 { font-size: 32px; letter-spacing: 1px; }
+    .hero p { font-size: 16px; }
+    .hero-interno h1 { font-size: 28px; }
+    .hero-interno p { font-size: 16px; }
+    .section-title h2 { font-size: 26px; }
 
-    /* TODOS los grids a 1 columna */
-    .enfoque-grid, .beneficios-grid, .contactos-grid,
+    /* Grids pesados (con mucho contenido por card): 1 columna */
     .ubicacion-info, .sedes-grid, .reproductores-grid,
-    .ventajas-grid, .evaluacion-grid, .caracteristicas-fisicas,
-    .objetivos-principales-grid, .valor-premios-grid,
-    .catalogo-grid, .footer-content {
+    .ventajas-grid, .caracteristicas-fisicas,
+    .objetivos-principales-grid, .footer-content {
         grid-template-columns: 1fr;
     }
 
+    /* Grids livianos: mantener 2 columnas para que se vea orgánico (como tablet) */
+    .enfoque-grid, .beneficios-grid, .contactos-grid,
+    .evaluacion-grid, .valor-premios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+    .enfoque-card, .beneficio-card, .contacto-card,
+    .evaluacion-card, .valor-card {
+        padding: 18px 14px;
+    }
+    .enfoque-card h3, .beneficio-card h3,
+    .evaluacion-card h4, .valor-card h3 { font-size: 15px; }
+    .enfoque-card p, .beneficio-card p,
+    .evaluacion-card p, .valor-card p { font-size: 13.5px; line-height: 1.5; }
+    .enfoque-icono, .objetivo-icono-grande, .contacto-icono { font-size: 34px; }
+
+    /* Catálogo de reproductores: 1 col centrado y más compacto */
+    .catalogo-grid {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+        margin: 0 auto;
+        gap: 22px;
+    }
+    .reproductor-imagen { height: 220px; }
+    .reproductor-info { padding: 22px 18px 20px; }
+    .reproductor-nombre { font-size: 22px; margin-bottom: 14px; }
+    .reproductor-categoria { font-size: 12px; padding: 5px 12px; margin-bottom: 12px; }
+    .reproductor-badge { font-size: 11px; padding: 5px 10px; top: 12px; right: 12px; }
+    .reproductor-detalles { padding: 12px 14px; }
+    .detalle-label, .detalle-valor { font-size: 14px; }
+    .reproductor-descripcion { font-size: 15px; line-height: 1.55; }
+    .tag { font-size: 12px; padding: 4px 10px; }
+    .btn-consultar, .btn-documento { font-size: 15px; padding: 13px; }
+
+    /* Tipografía cards "pesadas" en mobile */
+    .ventaja-item h4, .objetivo-principal-card h3,
+    .reproductor-card h2, .ubicacion-card h3, .sede-card h3,
+    .contacto-header h3, .exposicion-item h4,
+    .caracteristica-item h4, .faq-item h4 { font-size: 19px; }
+
+    .ventaja-item p, .objetivo-principal-card > p,
+    .ubicacion-card p, .sede-descripcion,
+    .contacto-datos p, .contacto-descripcion,
+    .exposicion-item p, .caracteristica-item p,
+    .faq-item p, .lista-beneficios li, .lista-caracteristicas li,
+    .lista-detalles li { font-size: 15px; line-height: 1.55; }
+
+    .destacado { font-size: 17px; }
+    .intro-texto, .contenido-texto, .intro-trayectoria,
+    .intro-contacto, .intro-objetivos, .compromiso-texto,
+    .columna-texto p, .compromiso-texto p { font-size: 16px; line-height: 1.65; }
+
+    /* Footer 1 col centrado */
     .footer-content { text-align: center; gap: 24px; }
     .footer-col h4::after { left: 50%; transform: translateX(-50%); }
-
-    /* Catálogo: imagen más alta para que se vea bien el animal */
-    .reproductor-imagen { height: 260px; }
+    .footer-col p, .footer-col a { font-size: 15px; }
 
     /* Filtros stacked */
     .filtros-box { flex-direction: column; gap: 10px; }
-    .filtro-btn { width: 100%; }
+    .filtro-btn { width: 100%; font-size: 15px; padding: 12px 18px; }
 
     /* Contactos rápidos stacked */
     .contactos-rapidos { flex-direction: column; gap: 12px; }
-    .contacto-rapido { width: 100%; justify-content: center; }
+    .contacto-rapido { width: 100%; justify-content: center; font-size: 15px; }
 
     /* CTA buttons stacked */
     .cta-buttons { flex-direction: column; gap: 12px; align-items: stretch; }
-    .btn-primary, .btn-secondary { text-align: center; }
+    .btn-primary, .btn-secondary { text-align: center; font-size: 16px; padding: 14px 24px; }
+    .cta-section h2 { font-size: 26px; }
+    .cta-section p { font-size: 16px; }
 
     /* Modal: ocupa casi toda la pantalla */
     .modal-content {
@@ -2229,5 +2280,13 @@ footer {
     }
 
     /* Tablas: ya con scroll, achicar más */
-    th, td { font-size: 12px; padding: 10px; }
+    th, td { font-size: 13px; padding: 10px; }
+}
+
+/* --- MOBILE muy chico (≤400px): bajar a 1 col los grids livianos también --- */
+@media (max-width: 400px) {
+    .enfoque-grid, .beneficios-grid, .contactos-grid,
+    .evaluacion-grid, .valor-premios-grid {
+        grid-template-columns: 1fr;
+    }
 }
