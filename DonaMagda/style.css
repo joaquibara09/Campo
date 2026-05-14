@@ -2342,3 +2342,39 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- SAFETY NET: piso de tamaño de fuente legible en mobile ---
+   Forzar mínimos para que ninguna regla en `vw` previa deje texto ilegible.
+   Se aplica al final con !important para ganar especificidad sin tocar
+   selectores existentes. */
+@media (max-width: 768px) {
+    body { font-size: 16px !important; }
+
+    p, li, a, span, label, button, input, select, textarea,
+    td, th, small, strong, em, blockquote {
+        font-size: max(14px, 1em);
+    }
+
+    /* Headings con mínimo */
+    h1 { font-size: max(26px, 1.6em) !important; }
+    h2 { font-size: max(22px, 1.4em) !important; }
+    h3 { font-size: max(18px, 1.2em) !important; }
+    h4 { font-size: max(16px, 1.1em) !important; }
+
+    /* Texto auxiliar: nunca menor a 13px */
+    small, .reproductor-categoria, .reproductor-badge,
+    .tag, .detalle-label, .detalle-valor,
+    .copyright {
+        font-size: max(13px, 0.85em) !important;
+    }
+
+    /* Contactos rápidos (la card que aparecía ilegible) */
+    .contacto-rapido { font-size: 16px !important; }
+    .contacto-rapido span { font-size: 16px !important; }
+    .contacto-rapido small { font-size: 14px !important; }
+    .contacto-rapido .icono { font-size: 28px !important; }
+
+    /* Info-compra box */
+    .info-compra-box h2 { font-size: 22px !important; }
+    .info-compra-box p { font-size: 15px !important; }
+}
