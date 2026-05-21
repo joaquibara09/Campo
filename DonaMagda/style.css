@@ -1,5 +1,6 @@
 :root {
     --tierra-colorada: #A54938;
+    --bordeaux: #6B1A1A;
     --verde-monte: #1b4332;
     --verde-claro: #40916c;
     --crudo: #f2eee3;
@@ -934,6 +935,87 @@ footer {
     margin-bottom: 2vh;
     color: var(--crudo);
     text-transform: uppercase;
+}
+
+.footer-logo {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 2.5vh;
+    display: block;
+}
+
+/* --- ¿POR QUÉ ELEGIR DOÑA MAGDA? --- */
+.tagline {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--bordeaux, #6B1A1A);
+    margin-top: 0.5vh;
+    margin-bottom: 1vh;
+    font-weight: 500;
+}
+
+.por-que-intro {
+    max-width: 900px;
+    margin: 0 auto 5vh;
+    text-align: center;
+}
+
+.por-que-intro p {
+    margin-bottom: 2vh;
+}
+
+.pilares-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3vw;
+    margin-top: 3vh;
+}
+
+.pilar-card {
+    text-align: center;
+    padding: 2vh 1vw;
+}
+
+.pilar-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--bordeaux, #6B1A1A);
+    margin-bottom: 1.5vh;
+    font-weight: 700;
+}
+
+.pilar-linea {
+    width: 60px;
+    height: 2px;
+    background: var(--bordeaux, #6B1A1A);
+    margin: 0 auto 2vh;
+}
+
+.pilar-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--texto, #333);
+}
+
+.ubicacion-direccion {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--bordeaux, #6B1A1A);
+    margin-bottom: 1.5vh;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .pilares-grid {
+        grid-template-columns: 1fr;
+        gap: 4vh;
+    }
+    .pilar-card h3 { font-size: 32px; }
+    .pilar-card p { font-size: 22px; }
+    .tagline { font-size: 22px; }
+    .footer-logo { max-width: 60vw; }
+    .ubicacion-direccion { font-size: 22px; }
 }
 
 .footer-col h4 {
