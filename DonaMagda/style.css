@@ -2467,3 +2467,43 @@ footer {
     .info-compra-box h2 { font-size: 22px !important; }
     .info-compra-box p { font-size: 15px !important; }
 }
+
+/* --- FOOTER MOBILE: tamaños compactos (override safety net) --- */
+@media (max-width: 768px) {
+    footer { padding: 40px 0 20px; }
+
+    .footer-content {
+        gap: 28px;
+        margin-bottom: 28px;
+    }
+
+    .footer-logo {
+        max-width: 140px !important;
+        margin: 0 auto 16px;
+    }
+
+    .footer-col {
+        text-align: center;
+    }
+
+    .footer-col h4 {
+        font-size: 15px !important;
+        margin-bottom: 14px;
+        letter-spacing: 0.5px;
+    }
+
+    .footer-col p,
+    .footer-col a,
+    .footer-col strong,
+    .footer-col span {
+        font-size: 13px !important;
+        line-height: 1.55;
+        margin-bottom: 6px;
+    }
+
+    .copyright {
+        font-size: 11px !important;
+        padding-top: 18px;
+        line-height: 1.5;
+    }
+}
