@@ -57,7 +57,7 @@ async function validarCredenciales(nombre, pwd) {
         .from('usuarios')
         .select('nombre, rol')
         .eq('nombre', nombre)
-        .eq('persona con discapacidad', pwd)
+        .eq('pwd', pwd)
         .maybeSingle();
     if (error) {
         console.error('Error consultando usuarios:', error.message);
