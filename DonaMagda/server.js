@@ -51,19 +51,23 @@ async function eliminarDeStorage(publicUrl) {
     if (error) console.warn(`No se pudo borrar ${objectPath}: ${error.message}`);
 }
 
+function normalizarNombre(s) {
+    return s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim();
+}
+
 async function validarCredenciales(nombre, pwd) {
     if (!nombre || !pwd) return null;
     const { data, error } = await supabase
         .from('usuarios')
         .select('nombre, rol')
-        .eq('nombre', nombre)
-        .eq('pwd', pwd)
-        .maybeSingle();
+        .eq('pwd', pwd);
     if (error) {
         console.error('Error consultando usuarios:', error.message);
         return null;
     }
-    return data || null;
+    if (!data || data.length === 0) return null;
+    const target = normalizarNombre(nombre);
+    return data.find(u => normalizarNombre(u.nombre) === target) || null;
 }
 
 app.post('/admin/login', async (req, res) => {
