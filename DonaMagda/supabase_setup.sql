@@ -70,23 +70,31 @@ on conflict (nombre) do nothing;
 -- Estructura interna del bucket:
 --   reproductores/
 --     ├── imagenes/<timestamp>-<archivo>
---     ├── documentos/<timestamp>-<archivo>
---     └── media/<archivo>              ← fotos y videos del carrusel
+--     └── documentos/<timestamp>-<archivo>
 --
 -- ============================================================
--- Galería de reproductores.html
+-- Galería de reproductores.html — bucket 'media'
 -- ============================================================
--- El endpoint GET /galeria lista la carpeta 'media' del bucket y devuelve
--- las URLs públicas. No usa base de datos: alcanza con subir los archivos.
+-- Las fotos y videos del carrusel viven en un bucket aparte, 'media',
+-- con los archivos en la raíz:
+--   media/
+--     ├── IMG_1058.mp4
+--     └── <foto o video>...
+--
+-- El endpoint GET /galeria lista ese bucket y devuelve las URLs públicas.
+-- No usa base de datos: alcanza con subir los archivos.
+--
+-- El bucket tiene que ser público para que las URLs se vean en el navegador.
+--
+-- IMPORTANTE: listar un bucket NO está permitido para el rol anon (devuelve
+-- lista vacía). El server necesita sí o sí SUPABASE_SERVICE_ROLE_KEY, o la
+-- galería queda oculta aunque los archivos estén subidos.
 --
 -- El orden del carrusel es alfabético por nombre, así que conviene
 -- prefijarlos: 01-toro.jpg, 02-rodeo.mp4, 03-campo.jpg...
 --
--- Si la galería vive en OTRO proyecto de Supabase, definí estas variables
--- de entorno (si no, usa el mismo proyecto y bucket que el resto del sitio):
---   GALERIA_SUPABASE_URL   → https://<proyecto>.supabase.co
---   GALERIA_SUPABASE_KEY   → service_role del proyecto de la galería
---   GALERIA_BUCKET         → nombre del bucket (default: el mismo del sitio)
---   GALERIA_CARPETA        → carpeta dentro del bucket (default: media)
---
--- El bucket tiene que ser público para que las URLs se vean en el navegador.
+-- Variables de entorno de la galería:
+--   GALERIA_BUCKET         → bucket de la galería (default: el del sitio) → media
+--   GALERIA_CARPETA        → subcarpeta dentro del bucket (default: raíz)
+--   GALERIA_SUPABASE_URL   → solo si vive en OTRO proyecto de Supabase
+--   GALERIA_SUPABASE_KEY   → service_role de ese otro proyecto

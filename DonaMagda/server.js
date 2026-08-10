@@ -26,7 +26,8 @@ const supabase = createClient(
 const GALERIA_URL = process.env.GALERIA_SUPABASE_URL || SUPABASE_URL;
 const GALERIA_KEY = process.env.GALERIA_SUPABASE_KEY || SUPABASE_SERVICE_KEY;
 const GALERIA_BUCKET = process.env.GALERIA_BUCKET || STORAGE_BUCKET;
-const GALERIA_CARPETA = process.env.GALERIA_CARPETA ?? 'media';
+// Vacío = raíz del bucket, que es donde están los medios del bucket 'media'.
+const GALERIA_CARPETA = process.env.GALERIA_CARPETA ?? '';
 
 const supabaseGaleria = (GALERIA_URL === SUPABASE_URL && GALERIA_KEY === SUPABASE_SERVICE_KEY)
     ? supabase
