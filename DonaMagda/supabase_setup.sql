@@ -71,12 +71,12 @@ on conflict (nombre) do nothing;
 --   reproductores/
 --     ├── imagenes/<timestamp>-<archivo>
 --     ├── documentos/<timestamp>-<archivo>
---     └── galeria/<archivo>            ← fotos y videos del carrusel
+--     └── media/<archivo>              ← fotos y videos del carrusel
 --
 -- ============================================================
 -- Galería de reproductores.html
 -- ============================================================
--- El endpoint GET /galeria lista la carpeta 'galeria' del bucket y devuelve
+-- El endpoint GET /galeria lista la carpeta 'media' del bucket y devuelve
 -- las URLs públicas. No usa base de datos: alcanza con subir los archivos.
 --
 -- El orden del carrusel es alfabético por nombre, así que conviene
@@ -87,6 +87,6 @@ on conflict (nombre) do nothing;
 --   GALERIA_SUPABASE_URL   → https://<proyecto>.supabase.co
 --   GALERIA_SUPABASE_KEY   → service_role del proyecto de la galería
 --   GALERIA_BUCKET         → nombre del bucket (default: el mismo del sitio)
---   GALERIA_CARPETA        → carpeta dentro del bucket (default: galeria)
+--   GALERIA_CARPETA        → carpeta dentro del bucket (default: media)
 --
 -- El bucket tiene que ser público para que las URLs se vean en el navegador.
