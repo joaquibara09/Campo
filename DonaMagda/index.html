@@ -127,6 +127,20 @@
         </div>
     </section>
 
+    <!-- CARRUSEL — se muestra solo si hay medios en el Storage; si no, queda oculto -->
+    <section id="galeria" class="bg-light" style="display: none;">
+        <div class="container">
+            <div class="galeria-carrusel" id="galeria-carrusel" tabindex="0" aria-roledescription="carrusel" aria-label="Fotos y videos del campo">
+                <div class="galeria-viewport">
+                    <div class="galeria-track" id="galeria-track"></div>
+                </div>
+                <button type="button" class="galeria-nav galeria-prev" id="galeria-prev" aria-label="Anterior">&#8249;</button>
+                <button type="button" class="galeria-nav galeria-next" id="galeria-next" aria-label="Siguiente">&#8250;</button>
+                <div class="galeria-dots" id="galeria-dots"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="por-que-elegirnos">
         <div class="container">
             <div class="section-title">
@@ -202,5 +216,6 @@
         </div>
     </footer>
 
+    <script src="galeria.js"></script>
 </body>
 </html>
