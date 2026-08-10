@@ -56,10 +56,16 @@
                         Nuestra filosofía se basa en la búsqueda constante de la excelencia genética, respetando el bienestar animal y el medio ambiente. Trabajamos con un enfoque integral que combina innovación tecnológica, conocimiento técnico y compromiso con la sustentabilidad.
                     </p>
                 </div>
-                <div class="columna-imagen">
-                    <video autoplay loop muted playsinline preload="auto" poster="">
-                        <source src="https://tmwcvtziihikxwlvmkfm.supabase.co/storage/v1/object/public/media/IMG_1058.mp4" type="video/mp4">
-                    </video>
+                <!-- CARRUSEL — se muestra solo si hay medios en el Storage; si no, queda oculto -->
+                <div class="columna-imagen" id="galeria" style="display: none;">
+                    <div class="galeria-carrusel" id="galeria-carrusel" tabindex="0" aria-roledescription="carrusel" aria-label="Fotos y videos del campo">
+                        <div class="galeria-viewport">
+                            <div class="galeria-track" id="galeria-track"></div>
+                        </div>
+                        <button type="button" class="galeria-nav galeria-prev" id="galeria-prev" aria-label="Anterior">&#8249;</button>
+                        <button type="button" class="galeria-nav galeria-next" id="galeria-next" aria-label="Siguiente">&#8250;</button>
+                        <div class="galeria-dots" id="galeria-dots"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,20 +129,6 @@
                     <p class="ubicacion-direccion">Ruta provincial N°8, Departamento 25 de Mayo</p>
                     <p>Sede de cría y recría bajo sistemas silvopastoriles de vanguardia. Integración productiva y protección activa del bosque nativo para un desarrollo ambientalmente sustentable en el corazón misionero.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CARRUSEL — se muestra solo si hay medios en el Storage; si no, queda oculto -->
-    <section id="galeria" class="bg-light" style="display: none;">
-        <div class="container">
-            <div class="galeria-carrusel" id="galeria-carrusel" tabindex="0" aria-roledescription="carrusel" aria-label="Fotos y videos del campo">
-                <div class="galeria-viewport">
-                    <div class="galeria-track" id="galeria-track"></div>
-                </div>
-                <button type="button" class="galeria-nav galeria-prev" id="galeria-prev" aria-label="Anterior">&#8249;</button>
-                <button type="button" class="galeria-nav galeria-next" id="galeria-next" aria-label="Siguiente">&#8250;</button>
-                <div class="galeria-dots" id="galeria-dots"></div>
             </div>
         </div>
     </section>

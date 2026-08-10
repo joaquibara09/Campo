@@ -261,8 +261,10 @@ section {
     text-align: justify;
 }
 
-.columna-imagen img,
-.columna-imagen video {
+/* Hijos directos: si adentro va el carrusel, sus medios se estilan aparte
+   (si no, este 'cover' le ganaría por especificidad al 'contain' del carrusel). */
+.columna-imagen > img,
+.columna-imagen > video {
     width: 100%;
     border-radius: 1vh;
     box-shadow: var(--shadow);
@@ -2611,6 +2613,22 @@ footer {
 .galeria-dot.active {
     background-color: var(--tierra-colorada);
     transform: scale(1.3);
+}
+
+/* El carrusel dentro de la columna de "Sobre Cabaña Doña Magda":
+   ocupa el ancho de la columna y copia el redondeo del resto de la página. */
+.columna-imagen .galeria-carrusel {
+    max-width: 100%;
+}
+
+.columna-imagen .galeria-viewport {
+    border-radius: 1vh;
+}
+
+.columna-imagen .galeria-nav {
+    width: 3.8vh;
+    height: 3.8vh;
+    font-size: 22px;
 }
 
 @media (prefers-reduced-motion: reduce) {
