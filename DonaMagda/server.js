@@ -21,6 +21,20 @@ const supabase = createClient(
     SUPABASE_SERVICE_KEY || 'placeholder-key'
 );
 
+// --- Galería: puede vivir en otro proyecto de Supabase ---
+// Si no se definen estas variables, usa el mismo proyecto/bucket que el resto del sitio.
+const GALERIA_URL = process.env.GALERIA_SUPABASE_URL || SUPABASE_URL;
+const GALERIA_KEY = process.env.GALERIA_SUPABASE_KEY || SUPABASE_SERVICE_KEY;
+const GALERIA_BUCKET = process.env.GALERIA_BUCKET || STORAGE_BUCKET;
+const GALERIA_CARPETA = process.env.GALERIA_CARPETA ?? 'galeria';
+
+const supabaseGaleria = (GALERIA_URL === SUPABASE_URL && GALERIA_KEY === SUPABASE_SERVICE_KEY)
+    ? supabase
+    : createClient(
+        GALERIA_URL || 'https://placeholder.supabase.co',
+        GALERIA_KEY || 'placeholder-key'
+    );
+
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -90,6 +104,36 @@ app.get('/admin/usuarios', async (req, res) => {
         return res.status(500).json({ error: 'Error al consultar usuarios' });
     }
     res.json((data || []).map(u => u.nombre));
+});
+
+// --- GALERÍA — lista los medios de la carpeta en Storage (no usa base de datos) ---
+const EXT_VIDEO = /\.(mp4|webm|mov|m4v|ogv)$/i;
+const EXT_IMAGEN = /\.(jpe?g|png|webp|gif|avif)$/i;
+
+app.get('/galeria', async (req, res) => {
+    const { data, error } = await supabaseGaleria.storage
+        .from(GALERIA_BUCKET)
+        .list(GALERIA_CARPETA, { limit: 200, sortBy: { column: 'name', order: 'asc' } });
+
+    if (error) {
+        console.error('Error listando galería:', error.message);
+        return res.status(500).json({ error: 'Error al leer la galería' });
+    }
+
+    const medios = (data || [])
+        .filter(f => f.name && (EXT_VIDEO.test(f.name) || EXT_IMAGEN.test(f.name)))
+        .map(f => {
+            const ruta = GALERIA_CARPETA ? `${GALERIA_CARPETA}/${f.name}` : f.name;
+            const { data: pub } = supabaseGaleria.storage.from(GALERIA_BUCKET).getPublicUrl(ruta);
+            return {
+                nombre: f.name,
+                tipo: EXT_VIDEO.test(f.name) ? 'video' : 'imagen',
+                url: pub.publicUrl
+            };
+        });
+
+    res.set('Cache-Control', 'public, max-age=60, must-revalidate');
+    res.json(medios);
 });
 
 app.get('/reproductores', async (req, res) => {
@@ -203,5 +247,6 @@ if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`🚀 Servidor listo en puerto ${PORT}`);
         console.log(`🪣 Bucket de Storage: ${STORAGE_BUCKET}`);
+        console.log(`🖼️  Galería: ${GALERIA_BUCKET}/${GALERIA_CARPETA} en ${GALERIA_URL}`);
     });
 }

@@ -214,6 +214,26 @@
         </section>
     </div>
 
+    <!-- GALERÍA — se muestra sola si hay medios en el Storage; si no, queda oculta -->
+    <section id="galeria" style="display: none;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galería</h2>
+                <div class="line"></div>
+                <p style="text-align: center; margin-top: 10px;">Nuestros ejemplares en el campo</p>
+            </div>
+
+            <div class="galeria-carrusel" id="galeria-carrusel" tabindex="0" aria-roledescription="carrusel" aria-label="Galería de fotos y videos">
+                <div class="galeria-viewport">
+                    <div class="galeria-track" id="galeria-track"></div>
+                </div>
+                <button type="button" class="galeria-nav galeria-prev" id="galeria-prev" aria-label="Anterior">&#8249;</button>
+                <button type="button" class="galeria-nav galeria-next" id="galeria-next" aria-label="Siguiente">&#8250;</button>
+                <div class="galeria-dots" id="galeria-dots"></div>
+            </div>
+        </div>
+    </section>
+
     <section class="bg-light">
         <div class="container">
             <div class="info-compra-box">

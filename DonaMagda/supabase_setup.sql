@@ -70,4 +70,23 @@ on conflict (nombre) do nothing;
 -- Estructura interna del bucket:
 --   reproductores/
 --     ├── imagenes/<timestamp>-<archivo>
---     └── documentos/<timestamp>-<archivo>
+--     ├── documentos/<timestamp>-<archivo>
+--     └── galeria/<archivo>            ← fotos y videos del carrusel
+--
+-- ============================================================
+-- Galería de reproductores.html
+-- ============================================================
+-- El endpoint GET /galeria lista la carpeta 'galeria' del bucket y devuelve
+-- las URLs públicas. No usa base de datos: alcanza con subir los archivos.
+--
+-- El orden del carrusel es alfabético por nombre, así que conviene
+-- prefijarlos: 01-toro.jpg, 02-rodeo.mp4, 03-campo.jpg...
+--
+-- Si la galería vive en OTRO proyecto de Supabase, definí estas variables
+-- de entorno (si no, usa el mismo proyecto y bucket que el resto del sitio):
+--   GALERIA_SUPABASE_URL   → https://<proyecto>.supabase.co
+--   GALERIA_SUPABASE_KEY   → service_role del proyecto de la galería
+--   GALERIA_BUCKET         → nombre del bucket (default: el mismo del sitio)
+--   GALERIA_CARPETA        → carpeta dentro del bucket (default: galeria)
+--
+-- El bucket tiene que ser público para que las URLs se vean en el navegador.
