@@ -56,15 +56,15 @@
                         Nuestra filosofía se basa en la búsqueda constante de la excelencia genética, respetando el bienestar animal y el medio ambiente. Trabajamos con un enfoque integral que combina innovación tecnológica, conocimiento técnico y compromiso con la sustentabilidad.
                     </p>
                 </div>
-                <!-- CARRUSEL — se muestra solo si hay medios en el Storage; si no, queda oculto -->
-                <div class="columna-imagen" id="galeria" style="display: none;">
-                    <div class="galeria-carrusel" id="galeria-carrusel" tabindex="0" aria-roledescription="carrusel" aria-label="Fotos y videos del campo">
+                <!-- CARRUSEL 'inicio' — se muestra solo si hay medios en el Storage -->
+                <div class="columna-imagen" data-galeria-caja style="display: none;">
+                    <div class="galeria-carrusel" data-carpeta="inicio" tabindex="0" aria-roledescription="carrusel" aria-label="Nuestros reproductores">
                         <div class="galeria-viewport">
-                            <div class="galeria-track" id="galeria-track"></div>
+                            <div class="galeria-track"></div>
                         </div>
-                        <button type="button" class="galeria-nav galeria-prev" id="galeria-prev" aria-label="Anterior">&#8249;</button>
-                        <button type="button" class="galeria-nav galeria-next" id="galeria-next" aria-label="Siguiente">&#8250;</button>
-                        <div class="galeria-dots" id="galeria-dots"></div>
+                        <button type="button" class="galeria-nav galeria-prev" aria-label="Anterior">&#8249;</button>
+                        <button type="button" class="galeria-nav galeria-next" aria-label="Siguiente">&#8250;</button>
+                        <div class="galeria-dots"></div>
                     </div>
                 </div>
             </div>
@@ -129,6 +129,20 @@
                     <p class="ubicacion-direccion">Ruta provincial N°8, Departamento 25 de Mayo</p>
                     <p>Sede de cría y recría bajo sistemas silvopastoriles de vanguardia. Integración productiva y protección activa del bosque nativo para un desarrollo ambientalmente sustentable en el corazón misionero.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARRUSEL 'campo' — el establecimiento y el rodeo -->
+    <section class="bg-light" data-galeria-caja style="display: none;">
+        <div class="container">
+            <div class="galeria-carrusel" data-carpeta="campo" tabindex="0" aria-roledescription="carrusel" aria-label="El campo y el rodeo">
+                <div class="galeria-viewport">
+                    <div class="galeria-track"></div>
+                </div>
+                <button type="button" class="galeria-nav galeria-prev" aria-label="Anterior">&#8249;</button>
+                <button type="button" class="galeria-nav galeria-next" aria-label="Siguiente">&#8250;</button>
+                <div class="galeria-dots"></div>
             </div>
         </div>
     </section>

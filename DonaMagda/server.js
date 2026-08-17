@@ -111,10 +111,19 @@ app.get('/admin/usuarios', async (req, res) => {
 const EXT_VIDEO = /\.(mp4|webm|mov|m4v|ogv)$/i;
 const EXT_IMAGEN = /\.(jpe?g|png|webp|gif|avif)$/i;
 
+// Solo letras, números, guiones y barras: evita que ?carpeta= escape del bucket.
+const CARPETA_VALIDA = /^[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*$/;
+
 app.get('/galeria', async (req, res) => {
+    const pedida = (req.query.carpeta || '').trim();
+    if (pedida && !CARPETA_VALIDA.test(pedida)) {
+        return res.status(400).json({ error: 'Carpeta inválida' });
+    }
+    const carpeta = pedida || GALERIA_CARPETA;
+
     const { data, error } = await supabaseGaleria.storage
         .from(GALERIA_BUCKET)
-        .list(GALERIA_CARPETA, { limit: 200, sortBy: { column: 'name', order: 'asc' } });
+        .list(carpeta, { limit: 200, sortBy: { column: 'name', order: 'asc' } });
 
     if (error) {
         console.error('Error listando galería:', error.message);
@@ -124,7 +133,7 @@ app.get('/galeria', async (req, res) => {
     const medios = (data || [])
         .filter(f => f.name && (EXT_VIDEO.test(f.name) || EXT_IMAGEN.test(f.name)))
         .map(f => {
-            const ruta = GALERIA_CARPETA ? `${GALERIA_CARPETA}/${f.name}` : f.name;
+            const ruta = carpeta ? `${carpeta}/${f.name}` : f.name;
             const { data: pub } = supabaseGaleria.storage.from(GALERIA_BUCKET).getPublicUrl(ruta);
             return {
                 nombre: f.name,
